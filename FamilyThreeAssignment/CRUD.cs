@@ -17,7 +17,7 @@ namespace FamilyThreeAssignment
         {
 
         }
-        public bool DoesPErsonExist(string name)
+        public bool DoesPersonExist(string name)
         {
             return true;
         }
