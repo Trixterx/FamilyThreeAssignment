@@ -41,5 +41,21 @@ namespace FamilyThreeAssignment
         {
 
         }
+
+        public void CreateDatabase()
+        {
+            var database = new SQLDatabase();
+            var sql = "Create Database " + DatabaseName;
+            database.ExecuteSQL(sql);
+        }
+        public void CheckDatabase()
+        {
+            var database = new SQLDatabase();
+            var myDatabaseName = "FamilyTree";
+            if (!database.DoesDatabaseExist(myDatabaseName))
+            {
+                CreateDatabase();
+            }
+        }
     }
 }
