@@ -10,7 +10,7 @@ namespace FamilyThreeAssignment
         public string DatabaseName { get; set; } = "FamilyThree";
         public int MaxRows { get; set; } = 10;
         public string OrderBy { get; set; } = "lastName";
-        internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database=Persons";
+        internal string ConnectionString { get; set; } = @"DataSource=.\SQLExpress;IntegratedSecurity=true;database=Persons";
 
 
         public void Create(Person person)
@@ -26,6 +26,17 @@ namespace FamilyThreeAssignment
             command.Parameters.AddWithValue("@father", person.Father);
             command.ExecuteNonQuery();
         }
+
+        public void Read(Person person)
+        {
+
+        }
+
+        public void Update(Person person)
+        {
+
+        }
+
         public void Delete(Person person)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
@@ -57,12 +68,6 @@ namespace FamilyThreeAssignment
         }
        // public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
 
-      //  public Person Read(string name){}
-
-        public void Update(Person person)
-        {
-
-        }
 
         public void CreateDatabase()
         {
