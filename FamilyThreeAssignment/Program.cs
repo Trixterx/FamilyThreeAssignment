@@ -7,7 +7,9 @@ namespace FamilyThreeAssignment
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            CRUD crud = new CRUD();
+            Person person = new Person();
+            crud.Create(person);
         }
     }
 }

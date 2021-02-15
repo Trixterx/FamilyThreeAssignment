@@ -7,10 +7,12 @@ namespace FamilyThreeAssignment
 {
     class CRUD
     {
-        public string DatabaseName { get; set; } = "FamilyThree";
+        public string DatabaseName { get; set; } = "Population";
         public int MaxRows { get; set; } = 10;
         public string OrderBy { get; set; } = "lastName";
-        internal string ConnectionString { get; set; } = @"DataSource=.\SQLExpress;IntegratedSecurity=true;database=Persons";
+        internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database={0}";
+        public List<Person> listOfPersons = new List<Person>();
+        //public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
 
 
         public void Create(Person person)
@@ -18,13 +20,14 @@ namespace FamilyThreeAssignment
             var connString = string.Format(ConnectionString, DatabaseName);
             var cnn = new SqlConnection(connString);
             cnn.Open();
-            var sql = "INSERT INTO People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
-            var command = new SqlCommand(sql, cnn);
-            command.Parameters.AddWithValue("@firstname", person.FirstName);
-            command.Parameters.AddWithValue("@lastname", person.LastName);
-            command.Parameters.AddWithValue("@mother", person.Mother);
-            command.Parameters.AddWithValue("@father", person.Father);
-            command.ExecuteNonQuery();
+            listOfPersons.Add(new Person(10, "Dennis", "Lindquist", "nej", "nej", 1, 1));
+                var sql = "INSERT INTO People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
+                var command = new SqlCommand(sql, cnn);
+                command.Parameters.AddWithValue("@firstname", person.FirstName);
+                command.Parameters.AddWithValue("@lastname", person.LastName);
+                command.Parameters.AddWithValue("@mother", person.Mother);
+                command.Parameters.AddWithValue("@father", person.Father);
+                command.ExecuteNonQuery();
         }
 
         public void Read(Person person)
@@ -66,10 +69,9 @@ namespace FamilyThreeAssignment
         {
 
         }
-       // public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
 
 
-        public void CreateDatabase()
+      /*  public void CreateDatabase()
         {
             var database = new SQLDatabase();
             var sql = "Create Database " + DatabaseName;
@@ -84,5 +86,6 @@ namespace FamilyThreeAssignment
                 CreateDatabase();
             }
         }
+      */
     }
 }
