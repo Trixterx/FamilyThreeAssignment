@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -66,7 +67,14 @@ namespace FamilyTreeAssignment
         }
         public void GetMother(Person person)
         {
-
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = "SELECT * FROM People WHERE Id = mother";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Console.WriteLine(person.FullInfo);
+            conn.Close();
         }
         public void GetFather(Person person)
         {
