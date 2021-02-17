@@ -34,10 +34,7 @@ namespace FamilyTreeAssignment
                     case 1:
                         sqlDB.CreateTable();
                         CreateListOfPeople(listOfPersons);
-                        foreach (var person in listOfPersons)
-                        {
-                            crud.Create(person);
-                        }
+                        crud.Create(listOfPersons);
                         break;
                     case 2:
                         crud.Read();
