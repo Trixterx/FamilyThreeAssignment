@@ -18,7 +18,7 @@ namespace FamilyTreeAssignment
                 var connString = string.Format(ConnectionString, DatabaseName);
                 var conn = new SqlConnection(connString);
                 conn.Open();
-                var sql = "DROP TABLE People CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), mother int, father int);";
+                var sql = "DROP TABLE People CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), mother int, father int);";
                 var cmd = new SqlCommand(sql, conn);
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Table Created Successfully...");

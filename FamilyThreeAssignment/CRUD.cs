@@ -15,21 +15,20 @@ namespace FamilyTreeAssignment
         public List<Person> listOfPersons = new List<Person>();
         //public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
 
-        public void Create(List<Person> listOfPersons)
+        public void Create(Person person)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            foreach (var person in listOfPersons)
-            {
-                var sql = "INSERT INTO People (firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
-                var cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@firstname", person.FirstName);
-                cmd.Parameters.AddWithValue("@lastname", person.LastName);
-                cmd.Parameters.AddWithValue("@mother", person.Mother);
-                cmd.Parameters.AddWithValue("@father", person.Father);
-                cmd.ExecuteNonQuery();
-            }
+            var sql = "INSERT INTO People (firstname, lastname, birthdate, deathdate, mother, father) VALUES (@firstname, @lastname, @birthdate, @deathdate, @mother, @father)";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@firstname", person.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", person.LastName);
+            cmd.Parameters.AddWithValue("@birthdate", person.BirthDate);
+            cmd.Parameters.AddWithValue("@deathdate", person.DeathDate);
+            cmd.Parameters.AddWithValue("@mother", person.Mother);
+            cmd.Parameters.AddWithValue("@father", person.Father);
+            cmd.ExecuteNonQuery();
             conn.Close();
         }
 

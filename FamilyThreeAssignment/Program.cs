@@ -19,12 +19,19 @@ namespace FamilyTreeAssignment
             var sqlDB = new SQLDatabase();
             bool KeepGoing = true;
 
+            sqlDB.CreateTable();
+            CreateListOfPeople(listOfPersons);
+            foreach (var person in listOfPersons)
+            {
+            crud.Create(person);
+            }
+
             while (KeepGoing)
             {
                 Console.WriteLine("-------------------");
-                Console.WriteLine("1. Create DB/Tables");
-                Console.WriteLine("2. Read DB");
-                Console.WriteLine("3. Update DB");
+                Console.WriteLine("1. Add Person");
+                Console.WriteLine("2. List People");
+                Console.WriteLine("3. Update Person");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -32,14 +39,35 @@ namespace FamilyTreeAssignment
                 switch (input)
                 {
                     case 1:
-                        sqlDB.CreateTable();
-                        CreateListOfPeople(listOfPersons);
-                        crud.Create(listOfPersons);
+                        var addPerson = new Person();
+
+                        Console.WriteLine("Enter firstname: ");
+                        addPerson.FirstName = Console.ReadLine();
+                        Console.WriteLine("Enter lastname: ");
+                        addPerson.LastName = Console.ReadLine();
+                        Console.WriteLine("Enter birthdate: ");
+                        addPerson.BirthDate = Console.ReadLine();
+                        Console.WriteLine("Is person dead? If so enter date, else write continue..");
+                        addPerson.DeathDate = Console.ReadLine();
+
+                        if (addPerson.DeathDate == null)
+                        {
+                            addPerson.DeathDate = "Still Alive";
+                        }
+
+                        Console.WriteLine("Mother?");
+                        addPerson.Mother = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Father?");
+                        addPerson.Father = Convert.ToInt32(Console.ReadLine());
+                        crud.Create(addPerson);
                         break;
                     case 2:
                         crud.Read();
                         break;
                     case 3:
+                        Console.WriteLine("Which person do you wanna update?");
+                        var selectedPerson = listOfPersons[+1];
+
                         break;
                     case 0:
                         Console.WriteLine("Byebye");
