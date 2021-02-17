@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace FamilyThreeAssignment
+namespace FamilyTreeAssignment
 {
     class CRUD
     {
@@ -14,25 +14,31 @@ namespace FamilyThreeAssignment
         public List<Person> listOfPersons = new List<Person>();
         //public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
 
-
         public void Create(Person person)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
-            var cnn = new SqlConnection(connString);
-            cnn.Open();
-            listOfPersons.Add(new Person(10, "Dennis", "Lindquist", "nej", "nej", 1, 1));
-                var sql = "INSERT INTO People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
-                var command = new SqlCommand(sql, cnn);
-                command.Parameters.AddWithValue("@firstname", person.FirstName);
-                command.Parameters.AddWithValue("@lastname", person.LastName);
-                command.Parameters.AddWithValue("@mother", person.Mother);
-                command.Parameters.AddWithValue("@father", person.Father);
-                command.ExecuteNonQuery();
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = "INSERT INTO People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@firstname", person.FirstName);
+            cmd.Parameters.AddWithValue("@lastname", person.LastName);
+            cmd.Parameters.AddWithValue("@mother", person.Mother);
+            cmd.Parameters.AddWithValue("@father", person.Father);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
         public void Read(Person person)
         {
-
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = "SELECT * FROM People";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            Console.WriteLine(person.FullInfo);
+            conn.Close();
         }
 
         public void Update(Person person)
@@ -43,15 +49,12 @@ namespace FamilyThreeAssignment
         public void Delete(Person person)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
-            var cnn = new SqlConnection(connString);
-            cnn.Open();
+            var conn = new SqlConnection(connString);
+            conn.Open();
             var sql = "DELETE FROM People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
-            var command = new SqlCommand(sql, cnn);
-            command.Parameters.AddWithValue("@firstname", person.FirstName);
-            command.Parameters.AddWithValue("@lastname", person.LastName);
-            command.Parameters.AddWithValue("@mother", person.Mother);
-            command.Parameters.AddWithValue("@father", person.Father);
-            command.ExecuteNonQuery();
+            var cmd = new SqlCommand(sql, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
         public bool DoesPersonExist(string name)
         {
