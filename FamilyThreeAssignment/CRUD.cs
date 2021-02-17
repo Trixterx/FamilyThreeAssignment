@@ -75,20 +75,29 @@ namespace FamilyTreeAssignment
         {
             return true;
         }
-        public void GetMother(Person person)
+        public int GetMother(string motherFirstNameInput, string motherLastNameInput)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "SELECT * FROM People WHERE Id = mother";
+            var sql = "SELECT Id FROM People WHERE (firstname, lastname) VALUES (@firstname, @lastname)";
             var cmd = new SqlCommand(sql, conn);
-            cmd.ExecuteNonQuery();
-            Console.WriteLine(person.FullInfo);
+            SqlDataReader reader = cmd.ExecuteReader();
+            int Id = Convert.ToInt32(reader.GetValue("Id"));
             conn.Close();
+            return Id;
         }
-        public void GetFather(Person person)
+        public int GetFather(string fatherFirstNameInput, string fatherLastNameInput)
         {
-
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = "SELECT Id FROM People WHERE (firstname, lastname) VALUES (@firstname, {fatherFirstNameInput}, @lastname, {fatherLastNameInput})";
+            var cmd = new SqlCommand(sql, conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            int Id = Convert.ToInt32(reader.GetValue("Id"));
+            conn.Close();
+            return Id;
         }
 
 

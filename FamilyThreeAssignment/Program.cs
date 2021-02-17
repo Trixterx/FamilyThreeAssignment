@@ -47,7 +47,7 @@ namespace FamilyTreeAssignment
                         addPerson.LastName = Console.ReadLine();
                         Console.WriteLine("Enter birthdate: ");
                         addPerson.BirthDate = Console.ReadLine();
-                        Console.WriteLine("Is person dead? If so enter date, else write continue..");
+                        Console.WriteLine("Is person dead? If so enter date, else press enter to continue..");
                         addPerson.DeathDate = Console.ReadLine();
 
                         if (addPerson.DeathDate == null)
@@ -55,10 +55,19 @@ namespace FamilyTreeAssignment
                             addPerson.DeathDate = "Still Alive";
                         }
 
-                        Console.WriteLine("Mother?");
-                        addPerson.Mother = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("Father?");
-                        addPerson.Father = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("Mothers firstname: ");
+                        string motherFirstNameInput = Console.ReadLine();
+                        Console.WriteLine("Mothers lastname: ");
+                        string motherLastNameInput = Console.ReadLine();
+                        addPerson.Mother = crud.GetMother(motherFirstNameInput, motherLastNameInput);
+
+
+                        Console.WriteLine("Fathers firstname: ");
+                        string fatherFirstNameInput = Console.ReadLine();
+                        Console.WriteLine("Fathers lastname: ");
+                        string fatherLastNameInput = Console.ReadLine();
+                        addPerson.Father = crud.GetMother(fatherFirstNameInput, fatherLastNameInput);
+
                         crud.Create(addPerson);
                         break;
                     case 2:
