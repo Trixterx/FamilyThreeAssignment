@@ -9,23 +9,47 @@ namespace FamilyTreeAssignment
     {
         static void Main(string[] args)
         {
+            Menu();
+        }
+
+        private static void Menu()
+        {
             List<Person> listOfPersons = new List<Person>();
             var crud = new CRUD();
             var sqlDB = new SQLDatabase();
-            CreateListOfPeople(listOfPersons);
+            bool KeepGoing = true;
 
-            sqlDB.CreateTable();
-
-            foreach (var person in listOfPersons)
+            while (KeepGoing)
             {
-                crud.Create(person);
+                Console.WriteLine("-------------------");
+                Console.WriteLine("1. Create DB/Tables");
+                Console.WriteLine("2. Read DB");
+                Console.WriteLine("3. Update DB");
+                Console.WriteLine("0. Exit");
+                Console.WriteLine("-------------------");
+                var input = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("-------------------");
+                switch (input)
+                {
+                    case 1:
+                        sqlDB.CreateTable();
+                        CreateListOfPeople(listOfPersons);
+                        foreach (var person in listOfPersons)
+                        {
+                            crud.Create(person);
+                        }
+                        break;
+                    case 2:
+                        crud.Read();
+                        break;
+                    case 3:
+                        break;
+                    case 0:
+                        Console.WriteLine("Byebye");
+                        KeepGoing = false;
+                        break;
+                }
             }
-            foreach (var person in listOfPersons)
-            {
-                crud.Read(person);
-            }
-            DataTable dt = new DataTable();
-
         }
 
         private static void CreateListOfPeople(List<Person> listOfPersons)

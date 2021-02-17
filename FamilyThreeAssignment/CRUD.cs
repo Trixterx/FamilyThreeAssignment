@@ -20,7 +20,7 @@ namespace FamilyTreeAssignment
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "INSERT INTO People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
+            var sql = "INSERT INTO People (firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", person.FirstName);
             cmd.Parameters.AddWithValue("@lastname", person.LastName);
@@ -30,15 +30,23 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
-        public void Read(Person person)
+        public void Read()
         {
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "SELECT * FROM People";
+            var sql = "SELECT Id, firstname, lastname FROM People";
             var cmd = new SqlCommand(sql, conn);
-            cmd.ExecuteNonQuery();
-            Console.WriteLine(person.FullInfo);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")}");
+                }
+
+            }
+            reader.Close();
             conn.Close();
         }
 
