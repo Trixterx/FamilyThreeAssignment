@@ -13,18 +13,18 @@ namespace FamilyTreeAssignment
         public string LastName { get; set; }
         public string BirthDate { get; set; }
         public string DeathDate { get; set; }
-        public int Mother { get; set; }
-        public int Father { get; set; }
+        public int MotherId { get; set; }
+        public int FatherId { get; set; }
 
-        public Person(int id, string firstName, string lastName, string birthDate, string deathDate, int mother, int father)
+        public Person(int id, string firstName, string lastName, string birthDate, string deathDate, int motherId, int fatherId)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             BirthDate = birthDate;
             DeathDate = deathDate;
-            Mother = mother;
-            Father = father;
+            MotherId = motherId;
+            FatherId = fatherId;
         }
 
         public Person()

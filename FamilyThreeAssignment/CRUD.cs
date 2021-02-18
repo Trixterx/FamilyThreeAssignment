@@ -20,14 +20,14 @@ namespace FamilyTreeAssignment
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "INSERT INTO People (firstname, lastname, birthdate, deathdate, mother, father) VALUES (@firstname, @lastname, @birthdate, @deathdate, @mother, @father)";
+            var sql = "INSERT INTO People (firstname, lastname, birthdate, deathdate, motherId, fatherId) VALUES (@firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId)";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", person.FirstName);
             cmd.Parameters.AddWithValue("@lastname", person.LastName);
             cmd.Parameters.AddWithValue("@birthdate", person.BirthDate);
             cmd.Parameters.AddWithValue("@deathdate", person.DeathDate);
-            cmd.Parameters.AddWithValue("@mother", person.Mother);
-            cmd.Parameters.AddWithValue("@father", person.Father);
+            cmd.Parameters.AddWithValue("@motherId", person.MotherId);
+            cmd.Parameters.AddWithValue("@fatherId", person.FatherId);
             cmd.ExecuteNonQuery();
             conn.Close();
         }
@@ -77,45 +77,82 @@ namespace FamilyTreeAssignment
         }
         public int GetMother(string motherFirstNameInput, string motherLastNameInput)
         {
+            int Id = 0;
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "SELECT Id FROM People WHERE (firstname, lastname) VALUES (@firstname, @lastname)";
+            var sql = $"SELECT Id FROM People WHERE firstname = '{motherFirstNameInput}' AND lastname = '{motherLastNameInput}'";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
-            int Id = Convert.ToInt32(reader.GetValue("Id"));
+            if (reader.HasRows)
+            { 
+                while (reader.Read())
+                {
+                    Id = Convert.ToInt32(reader.GetValue("Id"));
+                }
+            }
+            reader.Close();
             conn.Close();
             return Id;
         }
         public int GetFather(string fatherFirstNameInput, string fatherLastNameInput)
         {
+            int Id = 0;
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "SELECT Id FROM People WHERE (firstname, lastname) VALUES (@firstname, {fatherFirstNameInput}, @lastname, {fatherLastNameInput})";
+            var sql = $"SELECT Id FROM People WHERE firstname = '{fatherFirstNameInput}' AND lastname = '{fatherLastNameInput}'";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
-            int Id = Convert.ToInt32(reader.GetValue("Id"));
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Id = Convert.ToInt32(reader.GetValue("Id"));
+                }
+            }
+            reader.Close();
             conn.Close();
             return Id;
         }
 
-
-      /*  public void CreateDatabase()
+        public int AddParent(string parentFirstNameInput, string parentLastNameInput)
         {
-            var database = new SQLDatabase();
-            var sql = "Create Database " + DatabaseName;
-            database.ExecuteSQL(sql);
-        }
-        public void CheckDatabase()
-        {
-            var database = new SQLDatabase();
-            var myDatabaseName = "FamilyTree";
-            if (!database.DoesDatabaseExist(myDatabaseName))
+            int parentId = 0;
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = $"SELECT Id FROM People WHERE firstname = '{parentFirstNameInput}' AND lastname = '{parentLastNameInput}'";
+            var cmd = new SqlCommand(sql, conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
             {
-                CreateDatabase();
+                while (reader.Read())
+                {
+                    parentId = Convert.ToInt32(reader.GetValue("Id"));
+                }
             }
+            reader.Close();
+            conn.Close();
+            return parentId;
         }
-      */
+
+
+        /*  public void CreateDatabase()
+          {
+              var database = new SQLDatabase();
+              var sql = "Create Database " + DatabaseName;
+              database.ExecuteSQL(sql);
+          }
+          public void CheckDatabase()
+          {
+              var database = new SQLDatabase();
+              var myDatabaseName = "FamilyTree";
+              if (!database.DoesDatabaseExist(myDatabaseName))
+              {
+                  CreateDatabase();
+              }
+          }
+        */
     }
 }

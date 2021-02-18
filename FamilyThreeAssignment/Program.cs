@@ -39,41 +39,45 @@ namespace FamilyTreeAssignment
                 switch (input)
                 {
                     case 1:
-                        var addPerson = new Person();
+                        var addNewPerson = new Person();
+                        string parentFirstNameInput;
+                        string parentLastNameInput;
 
-                        Console.WriteLine("Enter firstname: ");
-                        addPerson.FirstName = Console.ReadLine();
-                        Console.WriteLine("Enter lastname: ");
-                        addPerson.LastName = Console.ReadLine();
-                        Console.WriteLine("Enter birthdate: ");
-                        addPerson.BirthDate = Console.ReadLine();
-                        Console.WriteLine("Is person dead? If so enter date, else press enter to continue..");
-                        addPerson.DeathDate = Console.ReadLine();
+                        Console.WriteLine("Enter Firstname: ");
+                        addNewPerson.FirstName = Console.ReadLine();
+                        Console.WriteLine("Enter Lastname: ");
+                        addNewPerson.LastName = Console.ReadLine();
+                        Console.WriteLine("Enter Birthdate: ");
+                        addNewPerson.BirthDate = Console.ReadLine();
+                        Console.WriteLine("If person IS dead enter the Deathdate, else [Press Enter to continue..]");
+                        addNewPerson.DeathDate = Console.ReadLine();
 
-                        if (addPerson.DeathDate == null)
+                        if (addNewPerson.DeathDate == null)
                         {
-                            addPerson.DeathDate = "Still Alive";
+                            addNewPerson.DeathDate = "";
                         }
 
                         Console.WriteLine("Mothers firstname: ");
-                        string motherFirstNameInput = Console.ReadLine();
+                        parentFirstNameInput = Console.ReadLine();
                         Console.WriteLine("Mothers lastname: ");
-                        string motherLastNameInput = Console.ReadLine();
-                        addPerson.Mother = crud.GetMother(motherFirstNameInput, motherLastNameInput);
+                        parentLastNameInput = Console.ReadLine();
+                        addNewPerson.MotherId = crud.AddParent(parentFirstNameInput, parentLastNameInput);
+
 
 
                         Console.WriteLine("Fathers firstname: ");
-                        string fatherFirstNameInput = Console.ReadLine();
+                        parentFirstNameInput = Console.ReadLine();
                         Console.WriteLine("Fathers lastname: ");
-                        string fatherLastNameInput = Console.ReadLine();
-                        addPerson.Father = crud.GetMother(fatherFirstNameInput, fatherLastNameInput);
+                        parentLastNameInput = Console.ReadLine();
+                        addNewPerson.FatherId = crud.AddParent(parentFirstNameInput, parentLastNameInput);
 
-                        crud.Create(addPerson);
+                        crud.Create(addNewPerson);
                         break;
                     case 2:
                         crud.Read();
                         break;
                     case 3:
+                        crud.Read();
                         Console.WriteLine("Which person do you wanna update?");
                         var selectedPerson = listOfPersons[+1];
 
@@ -88,15 +92,15 @@ namespace FamilyTreeAssignment
 
         private static void CreateListOfPeople(List<Person> listOfPersons)
         {
-            listOfPersons.Add(new Person(1, "Dennis", "Lindquist", "1988", "Alive", 4, 5));
-            listOfPersons.Add(new Person(2, "Marielle", "Lunnan", "1989", "Alive", 0, 0));
-            listOfPersons.Add(new Person(3, "Saga", "Lindquist", "2020", "Alive", 2, 1));
-            listOfPersons.Add(new Person(4, "Katarina", "Lindquist", "1964", "Alive", 7, 6));
-            listOfPersons.Add(new Person(5, "Mikael", "Lindh", "1965", "Alive", 9, 8));
-            listOfPersons.Add(new Person(6, "Elis", "Lindquist", "1920", "Dead", 0, 0));
-            listOfPersons.Add(new Person(7, "Gun", "Lindquist", "1941", "Alive", 0, 0));
-            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "Alive", 0, 0));
-            listOfPersons.Add(new Person(9, "Barbro", "Lindh", "1931", "Alive", 0, 0));
+            listOfPersons.Add(new Person(1, "Dennis", "Lindquist", "1988", "", 4, 5));
+            listOfPersons.Add(new Person(2, "Marielle", "Lunnan", "1989", "", 0, 0));
+            listOfPersons.Add(new Person(3, "Saga", "Lindquist", "2020", "", 2, 1));
+            listOfPersons.Add(new Person(4, "Katarina", "Lindquist", "1964", "", 7, 6));
+            listOfPersons.Add(new Person(5, "Mikael", "Lindh", "1965", "", 9, 8));
+            listOfPersons.Add(new Person(6, "Elis", "Lindquist", "1920", "2010", 0, 0));
+            listOfPersons.Add(new Person(7, "Gun", "Lindquist", "1941", "", 0, 0));
+            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "", 0, 0));
+            listOfPersons.Add(new Person(9, "Barbro", "Lindh", "1931", "", 0, 0));
 
         }
     }
