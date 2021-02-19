@@ -28,7 +28,6 @@ namespace FamilyTreeAssignment
             {
                 Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
             }
-
         }
 
             /*

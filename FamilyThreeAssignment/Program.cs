@@ -93,12 +93,13 @@ namespace FamilyTreeAssignment
                         Console.WriteLine("Who do you wanna Delete?");
                         int inputId = Convert.ToInt32(Console.ReadLine());
                         crud.Delete(inputId);
-                        listOfPersons.RemoveAt(inputId);
+                        listOfPersons.RemoveAt(inputId - 1);
                         break;
                     case 6:
+                        // For testing!
                         foreach (var person in listOfPersons)
                         {
-                            Console.WriteLine(person.FirstName);
+                            Console.WriteLine($"{person.Id}. {person.FirstName} {person.LastName}");
                         }
                         break;
                     case 0:
