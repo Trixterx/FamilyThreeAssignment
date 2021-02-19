@@ -17,9 +17,7 @@ namespace FamilyTreeAssignment
 
         public void Create(Person person)
         {
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
+            SqlConnection conn = sqlConn();
             var sql = "INSERT INTO People (firstname, lastname, birthdate, deathdate, motherId, fatherId) VALUES (@firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId)";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", person.FirstName);
@@ -32,11 +30,10 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+
         public void Read()
         {
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
+            SqlConnection conn = sqlConn();
             var sql = "SELECT Id, firstname, lastname FROM People";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -60,10 +57,8 @@ namespace FamilyTreeAssignment
 
         public void Delete(Person person)
         {
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
-            var sql = "DELETE FROM People @firstname, @lastname, @mother, @father";
+            SqlConnection conn = sqlConn();
+            var sql = "DELETE FROM People @firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId";
             var cmd = new SqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
@@ -71,9 +66,7 @@ namespace FamilyTreeAssignment
 
         public void Search(string firstNameInput, string lastNameInput)
         {
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
+            SqlConnection conn = sqlConn();
             var sql = "SELECT * FROM People WHERE firstname LIKE @firstname AND lastname LIKE @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
@@ -110,9 +103,7 @@ namespace FamilyTreeAssignment
         public int GetParent(string firstNameInput, string lastNameInput)
         {
             int Id = 0;
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
+            SqlConnection conn = sqlConn();
             var sql = "SELECT Id FROM People WHERE firstname = @firstname AND lastname = @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
@@ -130,6 +121,13 @@ namespace FamilyTreeAssignment
             return Id;
         }
 
+        private SqlConnection sqlConn()
+        {
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            return conn;
+        }
 
         /*  public void CreateDatabase()
           {

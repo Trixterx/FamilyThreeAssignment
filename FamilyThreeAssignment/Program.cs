@@ -16,12 +16,12 @@ namespace FamilyTreeAssignment
         {
             var listOfPersons = new List<Person>();
             var crud = new CRUD();
-            var sqlDB = new Database();
+            var db = new Database();
             bool KeepGoing = true;
             string firstNameInput;
             string lastNameInput;
 
-            Start(listOfPersons, crud, sqlDB);
+            Start(listOfPersons, crud, db);
 
             while (KeepGoing)
             {
@@ -30,6 +30,7 @@ namespace FamilyTreeAssignment
                 Console.WriteLine("2. List People");
                 Console.WriteLine("3. Seach Person");
                 Console.WriteLine("4. Update Person");
+                Console.WriteLine("5. Delete Person");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -81,8 +82,12 @@ namespace FamilyTreeAssignment
                     case 4:
                         crud.Read();
                         Console.WriteLine("Which person do you wanna update?");
-                        var selectedPerson = listOfPersons[+1];
+                        int selectedPerson = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine(listOfPersons[selectedPerson + 1]);
 
+
+                        break;
+                    case 5:
                         break;
                     case 0:
                         Console.WriteLine("Byebye");
@@ -92,9 +97,9 @@ namespace FamilyTreeAssignment
             }
         }
 
-        private static void Start(List<Person> listOfPersons, CRUD crud, Database sqlDB)
+        private static void Start(List<Person> listOfPersons, CRUD crud, Database db)
         {
-            sqlDB.CreateTable();
+            db.CreateTable();
             CreateListOfPeople(listOfPersons);
             foreach (var person in listOfPersons)
             {
