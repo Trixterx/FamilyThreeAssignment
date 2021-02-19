@@ -55,11 +55,12 @@ namespace FamilyTreeAssignment
         }
 
 
-        public void Delete(Person person)
+        public void Delete(int inputId)
         {
             SqlConnection conn = sqlConn();
-            var sql = "DELETE FROM People @firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId";
+            var sql = "DELETE FROM People WHERE Id = @Id";
             var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@Id", inputId);
             cmd.ExecuteNonQuery();
             conn.Close();
         }

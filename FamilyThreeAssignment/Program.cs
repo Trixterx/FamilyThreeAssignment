@@ -20,17 +20,18 @@ namespace FamilyTreeAssignment
             bool KeepGoing = true;
             string firstNameInput;
             string lastNameInput;
+            var dt = new DataTable();
 
-            Start(listOfPersons, crud, db);
+            Setup(listOfPersons, crud, db);
 
             while (KeepGoing)
             {
                 Console.WriteLine("-------------------");
-                Console.WriteLine("1. List People");
-                Console.WriteLine("2. Select Person");
-                Console.WriteLine("3. Add Person");
+                Console.WriteLine("1. List All Persons");
+                Console.WriteLine("2. Create Person");
+                Console.WriteLine("3. Update Person");
                 Console.WriteLine("4. Search Person");
-                Console.WriteLine("5. Update Person");
+                Console.WriteLine("5. Delete Person");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -41,8 +42,6 @@ namespace FamilyTreeAssignment
                         crud.Read();
                         break;
                     case 2:
-                        break;
-                    case 3:
                         var newPerson = new Person();
 
                         Console.WriteLine("Enter Firstname: ");
@@ -74,23 +73,33 @@ namespace FamilyTreeAssignment
                         crud.Create(newPerson);
                         listOfPersons.Add(newPerson);
                         break;
-                    case 4:
-                        Console.WriteLine("Firstname of the person you search for: ");
-                        firstNameInput = Console.ReadLine();
-                        Console.WriteLine("Lastname of the person you search for: ");
-                        lastNameInput = Console.ReadLine();
-                        crud.Search(firstNameInput, lastNameInput);
-                        break;
-                    case 5:
+                    case 3:
                         crud.Read();
                         Console.WriteLine("Which person do you wanna update?");
                         int selectedPerson = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine(listOfPersons[selectedPerson + 1]);
-                        
+
 
 
                         break;
+                    case 4:
+                        Console.WriteLine("Firstname of the person you want to search for: ");
+                        firstNameInput = Console.ReadLine();
+                        Console.WriteLine("Lastname of the person you want to search for: ");
+                        lastNameInput = Console.ReadLine();
+                        crud.Search(firstNameInput, lastNameInput);
+                        break;
+                    case 5:
+                        Console.WriteLine("Who do you wanna Delete?");
+                        int inputId = Convert.ToInt32(Console.ReadLine());
+                        crud.Delete(inputId);
+                        listOfPersons.RemoveAt(inputId);
+                        break;
                     case 6:
+                        foreach (var person in listOfPersons)
+                        {
+                            Console.WriteLine(person.FirstName);
+                        }
                         break;
                     case 0:
                         Console.WriteLine("Byebye");
@@ -100,7 +109,7 @@ namespace FamilyTreeAssignment
             }
         }
 
-        private static void Start(List<Person> listOfPersons, CRUD crud, Database db)
+        private static void Setup(List<Person> listOfPersons, CRUD crud, Database db)
         {
             db.CreateTable();
             CreateListOfPeople(listOfPersons);
