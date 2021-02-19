@@ -34,14 +34,14 @@ namespace FamilyTreeAssignment
         public void Read()
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT Id, firstname, lastname FROM People";
+            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM People";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")}");
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} \t| {reader.GetValue("birthdate")}-{reader.GetValue("deathdate")}");
                 }
 
             }
@@ -76,7 +76,7 @@ namespace FamilyTreeAssignment
             {
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")}");
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
                 }
 
             }

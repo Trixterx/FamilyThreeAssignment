@@ -26,11 +26,11 @@ namespace FamilyTreeAssignment
             while (KeepGoing)
             {
                 Console.WriteLine("-------------------");
-                Console.WriteLine("1. Add Person");
-                Console.WriteLine("2. List People");
-                Console.WriteLine("3. Seach Person");
-                Console.WriteLine("4. Update Person");
-                Console.WriteLine("5. Delete Person");
+                Console.WriteLine("1. List People");
+                Console.WriteLine("2. Select Person");
+                Console.WriteLine("3. Add Person");
+                Console.WriteLine("4. Search Person");
+                Console.WriteLine("5. Update Person");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -38,6 +38,11 @@ namespace FamilyTreeAssignment
                 switch (input)
                 {
                     case 1:
+                        crud.Read();
+                        break;
+                    case 2:
+                        break;
+                    case 3:
                         var newPerson = new Person();
 
                         Console.WriteLine("Enter Firstname: ");
@@ -69,25 +74,23 @@ namespace FamilyTreeAssignment
                         crud.Create(newPerson);
                         listOfPersons.Add(newPerson);
                         break;
-                    case 2:
-                        crud.Read();
-                        break;
-                    case 3:
+                    case 4:
                         Console.WriteLine("Firstname of the person you search for: ");
                         firstNameInput = Console.ReadLine();
                         Console.WriteLine("Lastname of the person you search for: ");
                         lastNameInput = Console.ReadLine();
                         crud.Search(firstNameInput, lastNameInput);
                         break;
-                    case 4:
+                    case 5:
                         crud.Read();
                         Console.WriteLine("Which person do you wanna update?");
                         int selectedPerson = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine(listOfPersons[selectedPerson + 1]);
+                        
 
 
                         break;
-                    case 5:
+                    case 6:
                         break;
                     case 0:
                         Console.WriteLine("Byebye");
