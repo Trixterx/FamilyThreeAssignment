@@ -31,14 +31,5 @@ namespace FamilyTreeAssignment
         {
 
         }
-
-        public string FullInfo
-        {
-            get
-            {
-                return $"{Id}. {FirstName} {LastName}";
-            }
-        }
-
     }
 }

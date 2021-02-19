@@ -78,9 +78,6 @@ namespace FamilyTreeAssignment
                         Console.WriteLine("Which person do you wanna update?");
                         int selectedPerson = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine(listOfPersons[selectedPerson + 1]);
-
-
-
                         break;
                     case 4:
                         Console.WriteLine("Firstname of the person you want to search for: ");
