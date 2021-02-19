@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FamilyTreeAssignment
 {
-    class SQLDatabase
+    class Database
     {
         public string DatabaseName { get; set; } = "Population";
         internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database={0}";
@@ -29,25 +29,25 @@ namespace FamilyTreeAssignment
                 Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
             }
 
+        }
 
             /*
-            void CreateDatabase()
-            {
-            var db = new SQLDatabase();
-            var sql = "CREATE DATABASE " + DatabaseName;
-            db.ExecuteSQL(sql);
-            }
-            void CheckDatabase()
-            {
-                var db = new SQLDatabase();
-                var myDB = "FamilyTree";
-                if (!db.DoesDatabaseExist(myDB))
-                {
-                    CreateDatabase();
-                }
-
-            }
-            */
+        public void CreateDatabase()
+        {
+        var db = new Database();
+        var sql = "CREATE DATABASE " + DatabaseName;
+        db.ExecuteSQL(sql);
         }
+        public void CheckDatabase()
+        {
+            var db = new Database();
+            var myDB = "FamilyTree";
+            if (!db.DoesDatabaseExist(myDB))
+            {
+                CreateDatabase();
+            }
+
+        }
+            */
     }
 }

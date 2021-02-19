@@ -57,16 +57,41 @@ namespace FamilyTreeAssignment
 
         }
 
+
         public void Delete(Person person)
         {
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = "DELETE FROM People(firstname, lastname, mother, father) VALUES (@firstname, @lastname, @mother, @father)";
+            var sql = "DELETE FROM People @firstname, @lastname, @mother, @father";
             var cmd = new SqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+
+        public void Search(string firstNameInput, string lastNameInput)
+        {
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            var sql = "SELECT * FROM People WHERE firstname LIKE @firstname AND lastname LIKE @lastname";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@firstname", firstNameInput);
+            cmd.Parameters.AddWithValue("@lastname", lastNameInput);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")}");
+                }
+
+            }
+            reader.Close();
+            conn.Close();
+        }
+    
+
         public bool DoesPersonExist(string name)
         {
             return true;
@@ -75,66 +100,34 @@ namespace FamilyTreeAssignment
         {
             return true;
         }
-        public int GetMother(string motherFirstNameInput, string motherLastNameInput)
+        public void GetMother()
         {
-            int Id = 0;
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
-            var sql = $"SELECT Id FROM People WHERE firstname = '{motherFirstNameInput}' AND lastname = '{motherLastNameInput}'";
-            var cmd = new SqlCommand(sql, conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            { 
-                while (reader.Read())
-                {
-                    Id = Convert.ToInt32(reader.GetValue("Id"));
-                }
-            }
-            reader.Close();
-            conn.Close();
-            return Id;
         }
-        public int GetFather(string fatherFirstNameInput, string fatherLastNameInput)
+        public void GetFather()
         {
-            int Id = 0;
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
-            var sql = $"SELECT Id FROM People WHERE firstname = '{fatherFirstNameInput}' AND lastname = '{fatherLastNameInput}'";
-            var cmd = new SqlCommand(sql, conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    Id = Convert.ToInt32(reader.GetValue("Id"));
-                }
-            }
-            reader.Close();
-            conn.Close();
-            return Id;
         }
 
-        public int AddParent(string parentFirstNameInput, string parentLastNameInput)
+        public int GetParent(string firstNameInput, string lastNameInput)
         {
-            int parentId = 0;
+            int Id = 0;
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);
             conn.Open();
-            var sql = $"SELECT Id FROM People WHERE firstname = '{parentFirstNameInput}' AND lastname = '{parentLastNameInput}'";
+            var sql = "SELECT Id FROM People WHERE firstname = @firstname AND lastname = @lastname";
             var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@firstname", firstNameInput);
+            cmd.Parameters.AddWithValue("@lastname", lastNameInput);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    parentId = Convert.ToInt32(reader.GetValue("Id"));
+                    Id = Convert.ToInt32(reader.GetValue("Id"));
                 }
             }
             reader.Close();
             conn.Close();
-            return parentId;
+            return Id;
         }
 
 

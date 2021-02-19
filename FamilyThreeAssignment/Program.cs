@@ -14,24 +14,22 @@ namespace FamilyTreeAssignment
 
         private static void Menu()
         {
-            List<Person> listOfPersons = new List<Person>();
+            var listOfPersons = new List<Person>();
             var crud = new CRUD();
-            var sqlDB = new SQLDatabase();
+            var sqlDB = new Database();
             bool KeepGoing = true;
+            string firstNameInput;
+            string lastNameInput;
 
-            sqlDB.CreateTable();
-            CreateListOfPeople(listOfPersons);
-            foreach (var person in listOfPersons)
-            {
-            crud.Create(person);
-            }
+            Start(listOfPersons, crud, sqlDB);
 
             while (KeepGoing)
             {
                 Console.WriteLine("-------------------");
                 Console.WriteLine("1. Add Person");
                 Console.WriteLine("2. List People");
-                Console.WriteLine("3. Update Person");
+                Console.WriteLine("3. Seach Person");
+                Console.WriteLine("4. Update Person");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -39,44 +37,48 @@ namespace FamilyTreeAssignment
                 switch (input)
                 {
                     case 1:
-                        var addNewPerson = new Person();
-                        string parentFirstNameInput;
-                        string parentLastNameInput;
+                        var newPerson = new Person();
 
                         Console.WriteLine("Enter Firstname: ");
-                        addNewPerson.FirstName = Console.ReadLine();
+                        newPerson.FirstName = Console.ReadLine();
                         Console.WriteLine("Enter Lastname: ");
-                        addNewPerson.LastName = Console.ReadLine();
+                        newPerson.LastName = Console.ReadLine();
                         Console.WriteLine("Enter Birthdate: ");
-                        addNewPerson.BirthDate = Console.ReadLine();
-                        Console.WriteLine("If person IS dead enter the Deathdate, else [Press Enter to continue..]");
-                        addNewPerson.DeathDate = Console.ReadLine();
+                        newPerson.BirthDate = Console.ReadLine();
+                        Console.WriteLine("If person IS dead enter the date of Death, else [Press Enter to continue..]");
+                        newPerson.DeathDate = Console.ReadLine();
 
-                        if (addNewPerson.DeathDate == null)
+                        if (newPerson.DeathDate == null)
                         {
-                            addNewPerson.DeathDate = "";
+                            newPerson.DeathDate = "";
                         }
 
                         Console.WriteLine("Mothers firstname: ");
-                        parentFirstNameInput = Console.ReadLine();
+                        firstNameInput = Console.ReadLine();
                         Console.WriteLine("Mothers lastname: ");
-                        parentLastNameInput = Console.ReadLine();
-                        addNewPerson.MotherId = crud.AddParent(parentFirstNameInput, parentLastNameInput);
-
-
+                        lastNameInput = Console.ReadLine();
+                        newPerson.MotherId = crud.GetParent(firstNameInput, lastNameInput);
 
                         Console.WriteLine("Fathers firstname: ");
-                        parentFirstNameInput = Console.ReadLine();
+                        firstNameInput = Console.ReadLine();
                         Console.WriteLine("Fathers lastname: ");
-                        parentLastNameInput = Console.ReadLine();
-                        addNewPerson.FatherId = crud.AddParent(parentFirstNameInput, parentLastNameInput);
+                        lastNameInput = Console.ReadLine();
+                        newPerson.FatherId = crud.GetParent(firstNameInput, lastNameInput);
 
-                        crud.Create(addNewPerson);
+                        crud.Create(newPerson);
+                        listOfPersons.Add(newPerson);
                         break;
                     case 2:
                         crud.Read();
                         break;
                     case 3:
+                        Console.WriteLine("Firstname of the person you search for: ");
+                        firstNameInput = Console.ReadLine();
+                        Console.WriteLine("Lastname of the person you search for: ");
+                        lastNameInput = Console.ReadLine();
+                        crud.Search(firstNameInput, lastNameInput);
+                        break;
+                    case 4:
                         crud.Read();
                         Console.WriteLine("Which person do you wanna update?");
                         var selectedPerson = listOfPersons[+1];
@@ -87,6 +89,16 @@ namespace FamilyTreeAssignment
                         KeepGoing = false;
                         break;
                 }
+            }
+        }
+
+        private static void Start(List<Person> listOfPersons, CRUD crud, Database sqlDB)
+        {
+            sqlDB.CreateTable();
+            CreateListOfPeople(listOfPersons);
+            foreach (var person in listOfPersons)
+            {
+                crud.Create(person);
             }
         }
 
