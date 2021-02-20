@@ -9,12 +9,11 @@ namespace FamilyTreeAssignment
 {
     class SqlDatabase
     {
-        public string DatabaseName { get; set; } = "Population";
+        public string DatabaseName { get; set; } = "FamilyTree";
         public int MaxRows { get; set; } = 10;
         public string OrderBy { get; set; } = "lastName";
         internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database={0}";
-        public List<Person> listOfPersons = new List<Person>();
-        //public List<Person> List(string filter = "firstName LIKE @input", string paramValue){}
+     //   public List<Person> listOfPersons = new List<Person>();
 
         public void Create(Person person)
         {
@@ -30,7 +29,6 @@ namespace FamilyTreeAssignment
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-
 
         public void Read()
         {
@@ -60,7 +58,6 @@ namespace FamilyTreeAssignment
             cmd.ExecuteNonQuery();
             conn.Close();
         }
-
 
         public void Delete(int inputId)
         {
@@ -92,7 +89,6 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
     
-
         public bool DoesPersonExist(string name)
         {
             return true;
@@ -156,15 +152,15 @@ namespace FamilyTreeAssignment
             }
         }
 
-        /*  public void CreateDatabase()
+        /*
+          public void CreateDatabase()
           {
-              var database = new SQLDatabase();
-              var sql = "Create Database " + DatabaseName;
-              database.ExecuteSQL(sql);
+              var database = new SqlDatabase();
+              var sql = "CREATE DATABASE " + DatabaseName;
           }
           public void CheckDatabase()
           {
-              var database = new SQLDatabase();
+              var database = new SqlDatabase();
               var myDatabaseName = "FamilyTree";
               if (!database.DoesDatabaseExist(myDatabaseName))
               {
