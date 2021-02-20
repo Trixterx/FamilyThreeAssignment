@@ -58,13 +58,13 @@ namespace FamilyTreeAssignment
                         Console.WriteLine("2. Lastname");
                         Console.WriteLine("3. Birthdate");
                         Console.WriteLine("4. Deathdate");
-                        Console.WriteLine("5. Father");
-                        Console.WriteLine("6. Mother");
+                        Console.WriteLine("5. Mother");
+                        Console.WriteLine("6. Father");
                         Console.WriteLine("--------------------------------");
-                        int updateSelectedPersonInput = Convert.ToInt32(Console.ReadLine());
+                        int updatePersonInput = Convert.ToInt32(Console.ReadLine());
                         do
                         {
-                            switch (updateSelectedPersonInput)
+                            switch (updatePersonInput)
                             {
                                 case 1:
                                     Console.WriteLine("Enter new Firstname: ");
@@ -91,12 +91,26 @@ namespace FamilyTreeAssignment
                                     Console.WriteLine("Enter new Deathdate: ");
                                     deathDateInput = Console.ReadLine();
                                     listOfPersons[selectedPerson].DeathDate = deathDateInput;
-                                    database.Update("birthdate", listOfPersons[selectedPerson].DeathDate, listOfPersons[selectedPerson].Id);
+                                    database.Update("deathdate", listOfPersons[selectedPerson].DeathDate, listOfPersons[selectedPerson].Id);
                                     updatePersonKeepGoing = false;
                                     break;
                                 case 5:
+                                    Console.WriteLine("Mothers Firstname: ");
+                                    firstNameInput = Console.ReadLine();
+                                    Console.WriteLine("Mothers Lastname: ");
+                                    lastNameInput = Console.ReadLine();
+                                    listOfPersons[selectedPerson].MotherId = database.SetParent(firstNameInput, lastNameInput);
+                                    database.Update("motherId", listOfPersons[selectedPerson].MotherId.ToString(), listOfPersons[selectedPerson].Id);
+                                    updatePersonKeepGoing = false;
                                     break;
                                 case 6:
+                                    Console.WriteLine("Fathers Firstname: ");
+                                    firstNameInput = Console.ReadLine();
+                                    Console.WriteLine("Fathers Lastname: ");
+                                    lastNameInput = Console.ReadLine();
+                                    listOfPersons[selectedPerson].FatherId = database.SetParent(firstNameInput, lastNameInput);
+                                    database.Update("motherId", listOfPersons[selectedPerson].FatherId.ToString(), listOfPersons[selectedPerson].Id);
+                                    updatePersonKeepGoing = false;
                                     break;
                             }
                         } while (updatePersonKeepGoing);
@@ -118,7 +132,7 @@ namespace FamilyTreeAssignment
                         // For testing!
                         foreach (var person in listOfPersons)
                         {
-                            Console.WriteLine($"{person.Id}. {person.FirstName} {person.LastName}");
+                            Console.WriteLine($"{person.Id}. {person.FirstName} {person.LastName} Mother: {person.MotherId} Father: {person.FatherId}");
                         }
                         break;
                     case 0:
@@ -147,17 +161,17 @@ namespace FamilyTreeAssignment
                 newPerson.DeathDate = "";
             }
 
-            Console.WriteLine("Mothers firstname: ");
+            Console.WriteLine("Mothers Firstname: ");
             firstNameInput = Console.ReadLine();
-            Console.WriteLine("Mothers lastname: ");
+            Console.WriteLine("Mothers Lastname: ");
             lastNameInput = Console.ReadLine();
-            newPerson.MotherId = database.GetParent(firstNameInput, lastNameInput);
+            newPerson.MotherId = database.SetParent(firstNameInput, lastNameInput);
 
-            Console.WriteLine("Fathers firstname: ");
+            Console.WriteLine("Fathers Firstname: ");
             firstNameInput = Console.ReadLine();
-            Console.WriteLine("Fathers lastname: ");
+            Console.WriteLine("Fathers Lastname: ");
             lastNameInput = Console.ReadLine();
-            newPerson.FatherId = database.GetParent(firstNameInput, lastNameInput);
+            newPerson.FatherId = database.SetParent(firstNameInput, lastNameInput);
 
             database.Create(newPerson);
             listOfPersons.Add(newPerson);

@@ -107,7 +107,7 @@ namespace FamilyTreeAssignment
         {
         }
 
-        public int GetParent(string firstNameInput, string lastNameInput)
+        public int SetParent(string firstNameInput, string lastNameInput)
         {
             int Id = 0;
             SqlConnection conn = sqlConn();
