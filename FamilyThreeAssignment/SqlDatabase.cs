@@ -99,6 +99,20 @@ namespace FamilyTreeAssignment
         }
         public void GetMother()
         {
+            SqlConnection conn = sqlConn();
+            var sql = "SELECT firstname, lastname FROM People WHERE Id = motherId";
+            var cmd = new SqlCommand(sql, conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
+                }
+
+            }
+            reader.Close();
+            conn.Close();
         }
         public void GetFather()
         {

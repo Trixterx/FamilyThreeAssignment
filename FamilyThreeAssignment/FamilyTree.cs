@@ -25,6 +25,8 @@ namespace FamilyThreeAssignment
                 Console.WriteLine("3. Update Person");
                 Console.WriteLine("4. Search Person");
                 Console.WriteLine("5. Delete Person");
+                Console.WriteLine("6. Select Person");
+                Console.WriteLine("7. Test!");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
                 var input = Convert.ToInt32(Console.ReadLine());
@@ -47,6 +49,11 @@ namespace FamilyThreeAssignment
                         DeletePerson(listOfPersons, database);
                         break;
                     case 6:
+                        Console.WriteLine("Which person do you wanna select?");
+                        int select = Convert.ToInt32(Console.ReadLine());
+
+                        break;
+                    case 7:
                         // For testing!
                         foreach (var person in listOfPersons)
                         {
@@ -71,8 +78,7 @@ namespace FamilyThreeAssignment
 
         private static void SearchPerson(SqlDatabase database)
         {
-            string firstNameInput;
-            string lastNameInput;
+            string firstNameInput, lastNameInput;
 
             Console.WriteLine("Firstname of the person you want to search for: ");
             firstNameInput = Console.ReadLine();
@@ -84,10 +90,7 @@ namespace FamilyThreeAssignment
         private static void UpdatePersonMenu(List<Person> listOfPersons, SqlDatabase database)
         {
             bool updatePersonKeepGoing = true;
-            string firstNameInput;
-            string lastNameInput;
-            string birthDateInput;
-            string deathDateInput;
+            string firstNameInput, lastNameInput, birthDateInput, deathDateInput;
 
             database.Read();
             Console.WriteLine("---------------------------------");
@@ -162,8 +165,7 @@ namespace FamilyThreeAssignment
         private static void CreatePerson(List<Person> listOfPersons, SqlDatabase database)
         {
             var newPerson = new Person();
-            string firstNameInput;
-            string lastNameInput;
+            string firstNameInput, lastNameInput;
 
             Console.WriteLine("Enter Firstname: ");
             newPerson.FirstName = Console.ReadLine();
