@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FamilyTreeAssignment
 {
-    class CRUD
+    class SqlDatabase
     {
         public string DatabaseName { get; set; } = "Population";
         public int MaxRows { get; set; } = 10;
@@ -49,9 +49,15 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
-        public void Update(Person person)
+        public void Update(string column, string input, int Id)
         {
-
+            SqlConnection conn = sqlConn();
+            var sql = $"UPDATE People SET {column} = @input WHERE Id = @Id";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@input", input);
+            cmd.Parameters.AddWithValue("@Id", Id);
+            cmd.ExecuteNonQuery();
+            conn.Close();
         }
 
 
@@ -128,6 +134,25 @@ namespace FamilyTreeAssignment
             var conn = new SqlConnection(connString);
             conn.Open();
             return conn;
+        }
+
+        public void CreateTable()
+        {
+            try
+            {
+                var connString = string.Format(ConnectionString, DatabaseName);
+                var conn = new SqlConnection(connString);
+                conn.Open();
+                var sql = "DROP TABLE People CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
+                var cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("Old Table was Dropped and a New Table was Created Successfully...");
+                conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
+            }
         }
 
         /*  public void CreateDatabase()
