@@ -19,9 +19,9 @@ namespace FamilyThreeAssignment
 
             do
             {
-                Console.WriteLine("-------------------");
-                Console.WriteLine("|  Main Menu      |");
-                Console.WriteLine("-------------------");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("|  Main Menu                                               |");
+                Console.WriteLine("------------------------------------------------------------");
                 Console.WriteLine("1. List All Persons");
                 Console.WriteLine("2. Create Person");
                 Console.WriteLine("3. Update Person");
@@ -30,9 +30,9 @@ namespace FamilyThreeAssignment
                 Console.WriteLine("6. Select Person");
                 Console.WriteLine("7. Test!");
                 Console.WriteLine("0. Exit");
-                Console.WriteLine("-------------------");
+                Console.WriteLine("------------------------------------------------------------");
                 var mainMenuInput = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("-------------------");
+                Console.WriteLine("------------------------------------------------------------");
                 switch (mainMenuInput)
                 {
                     case 1:
@@ -47,18 +47,24 @@ namespace FamilyThreeAssignment
                     case 4:
                         SearchPerson(database);
                         break;
-                    case 5:
+                    case 5:                    
                         DeletePerson(listOfPersons, database);
                         break;
                     case 6:
                         Console.WriteLine("Which person do you wanna select?");
+                        Console.WriteLine("------------------------------------------------------------");
                         int selectPersonInput = Convert.ToInt32(Console.ReadLine()) - 1;
                         Console.WriteLine($"{listOfPersons[selectPersonInput].Id}. {listOfPersons[selectPersonInput].FirstName} {listOfPersons[selectPersonInput].LastName}");
+                        Console.WriteLine("------------------------------------------------------------");
+                        Console.WriteLine("|  Select Person Menu                                      |");
+                        Console.WriteLine("------------------------------------------------------------");
                         Console.WriteLine("1. Get Mother");
                         Console.WriteLine("2. Get Father");
                         Console.WriteLine("3. Get Children");
                         Console.WriteLine("0. Main Menu");
+                        Console.WriteLine("------------------------------------------------------------");
                         int getParent = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("------------------------------------------------------------");
                         switch (getParent)
                         {
                             case 1:
@@ -91,7 +97,10 @@ namespace FamilyThreeAssignment
 
         private static void DeletePerson(List<Person> listOfPersons, SqlDatabase database)
         {
+            database.Read();
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Who do you wanna Delete?");
+            Console.WriteLine("------------------------------------------------------------");
             int inputId = Convert.ToInt32(Console.ReadLine());
             database.Delete(inputId);
             listOfPersons.RemoveAt(inputId - 1);
@@ -100,13 +109,15 @@ namespace FamilyThreeAssignment
         private static void SearchPerson(SqlDatabase database)
         {
             string firstNameInput, lastNameInput, yearInput;
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("|  Search Person                |");
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine("|  Search Person Menu                                      |");
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("1. Search by First and Lastname");
             Console.WriteLine("2. Search by Starting Letter of Firstname");
             Console.WriteLine("3. Search by Birth Year");
+            Console.WriteLine("------------------------------------------------------------");
             int searchPersonInput = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("------------------------------------------------------------");
             switch (searchPersonInput)
             {
                 case 1:
@@ -135,14 +146,15 @@ namespace FamilyThreeAssignment
             string firstNameInput, lastNameInput, birthDateInput, deathDateInput;
 
             database.Read();
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Which person do you wanna update?");
+            Console.WriteLine("------------------------------------------------------------");
             int selectedPerson = Convert.ToInt32(Console.ReadLine()) - 1;
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine($"{listOfPersons[selectedPerson].Id}. {listOfPersons[selectedPerson].FirstName} {listOfPersons[selectedPerson].LastName}");
-            Console.WriteLine("---------------------------------");
-            Console.WriteLine("|  Update Person                |");
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("------------------------------------------------------------");
+            Console.WriteLine("|  Update Person Menu                                      |");
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("1. Firstname");
             Console.WriteLine("2. Lastname");
             Console.WriteLine("3. Birthdate");
@@ -150,9 +162,9 @@ namespace FamilyThreeAssignment
             Console.WriteLine("5. Mother");
             Console.WriteLine("6. Father");
             Console.WriteLine("0. Main Menu");
-            Console.WriteLine("--------------------------------");
+            Console.WriteLine("------------------------------------------------------------");
             int updatePersonInput = Convert.ToInt32(Console.ReadLine());
-
+            Console.WriteLine("------------------------------------------------------------");
             switch (updatePersonInput)
             {
                 case 1:
@@ -261,7 +273,7 @@ namespace FamilyThreeAssignment
             listOfPersons.Add(new Person(5, "Mikael", "Lindh", "1965", "", 9, 8, 1));
             listOfPersons.Add(new Person(6, "Elis", "Lindquist", "1920", "2008", 0, 0, 4));
             listOfPersons.Add(new Person(7, "Gun", "Lindquist", "1941", "", 0, 0, 4));
-            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "", 0, 0, 5));
+            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "2000", 0, 0, 5));
             listOfPersons.Add(new Person(9, "Barbro", "Lindh", "1931", "", 0, 0, 5));
 
         }
