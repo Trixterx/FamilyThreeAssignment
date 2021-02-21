@@ -100,14 +100,14 @@ namespace FamilyTreeAssignment
         public void GetMother()
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT firstname, lastname FROM People WHERE Id = motherId";
+            var sql = "SELECT firstname, lastname, birthdate, deathdate FROM People WHERE Id = motherId";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Year: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
                 }
 
             }
@@ -118,6 +118,12 @@ namespace FamilyTreeAssignment
         {
         }
 
+        /// <summary>
+        /// Gets parent Id
+        /// </summary>
+        /// <param name="firstNameInput"></param>
+        /// <param name="lastNameInput"></param>
+        /// <returns></returns>
         public int SetParent(string firstNameInput, string lastNameInput)
         {
             int Id = 0;
@@ -139,6 +145,10 @@ namespace FamilyTreeAssignment
             return Id;
         }
 
+        /// <summary>
+        /// Database Connection
+        /// </summary>
+        /// <returns></returns>
         private SqlConnection sqlConn()
         {
             var connString = string.Format(ConnectionString, DatabaseName);
@@ -147,29 +157,32 @@ namespace FamilyTreeAssignment
             return conn;
         }
 
+        /// <summary>
+        /// Creates a Data table if none exists.
+        /// </summary>
         public void CreateTable()
         {
-            bool exists = true;
-            DoesTableExist(exists);
-            if (!exists)
+            try
             {
-                try
-                {
-                    SqlConnection conn = sqlConn();
-                    var sql = "CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
-                    var cmd = new SqlCommand(sql, conn);
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine("Data table was Created Successfully...");
-                    conn.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
-                }
+                SqlConnection conn = sqlConn();
+                var sql = "CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
+                var cmd = new SqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("Data table was Created Successfully...");
+                conn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
             }
         }
 
-        private bool DoesTableExist(bool exists)
+        /// <summary>
+        /// Check if Datatable exists.
+        /// </summary>
+        /// <param name="exists"></param>
+        /// <returns></returns>
+        public bool DoesTableExist(bool exists)
         {
             SqlConnection conn = sqlConn();
             var sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'People'";

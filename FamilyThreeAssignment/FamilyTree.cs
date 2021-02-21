@@ -20,6 +20,8 @@ namespace FamilyThreeAssignment
             do
             {
                 Console.WriteLine("-------------------");
+                Console.WriteLine("|  Main Menu      |");
+                Console.WriteLine("-------------------");
                 Console.WriteLine("1. List All Persons");
                 Console.WriteLine("2. Create Person");
                 Console.WriteLine("3. Update Person");
@@ -99,13 +101,15 @@ namespace FamilyThreeAssignment
             Console.WriteLine("---------------------------------");
             Console.WriteLine($"{listOfPersons[selectedPerson].Id}. {listOfPersons[selectedPerson].FirstName} {listOfPersons[selectedPerson].LastName}");
             Console.WriteLine("---------------------------------");
-            Console.WriteLine("What part do you wanna update?");
+            Console.WriteLine("|  Update Person                |");
+            Console.WriteLine("---------------------------------");
             Console.WriteLine("1. Firstname");
             Console.WriteLine("2. Lastname");
             Console.WriteLine("3. Birthdate");
             Console.WriteLine("4. Deathdate");
             Console.WriteLine("5. Mother");
             Console.WriteLine("6. Father");
+            Console.WriteLine("0. Main Menu");
             Console.WriteLine("--------------------------------");
             int updatePersonInput = Convert.ToInt32(Console.ReadLine());
             do
@@ -158,6 +162,9 @@ namespace FamilyThreeAssignment
                         database.Update("motherId", listOfPersons[selectedPerson].FatherId.ToString(), listOfPersons[selectedPerson].Id);
                         updatePersonKeepGoing = false;
                         break;
+                    case 0:
+                        updatePersonKeepGoing = false;
+                        break;
                 }
             } while (updatePersonKeepGoing);
         }
@@ -201,11 +208,16 @@ namespace FamilyThreeAssignment
 
         private static void Setup(List<Person> listOfPersons, SqlDatabase database)
         {
-            database.CreateTable();
+            bool exists = true;
             CreateListOfPeople(listOfPersons);
-            foreach (var person in listOfPersons)
+            if (!database.DoesTableExist(exists))
             {
-                database.Create(person);
+                database.CreateTable();
+
+                foreach (var person in listOfPersons)
+                {
+                    database.Create(person);
+                }
             }
         }
 
