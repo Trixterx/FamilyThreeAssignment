@@ -19,7 +19,7 @@ namespace FamilyTreeAssignment
         /// <param name="person"></param>
         public void Create(Person person)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "INSERT INTO Family (firstname, lastname, birthdate, deathdate, motherId, fatherId) VALUES (@firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId)";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", person.FirstName);
@@ -37,7 +37,7 @@ namespace FamilyTreeAssignment
         /// </summary>
         public void Read()
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM Family";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -61,7 +61,7 @@ namespace FamilyTreeAssignment
         /// <param name="Id"></param>
         public void Update(string column, string input, int Id)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = $"UPDATE Family SET {column} = @input WHERE Id = @Id";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@input", input);
@@ -76,7 +76,7 @@ namespace FamilyTreeAssignment
         /// <param name="inputId"></param>
         public void Delete(int inputId)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "DELETE FROM Family WHERE Id = @Id";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Id", inputId);
@@ -91,7 +91,7 @@ namespace FamilyTreeAssignment
         /// <param name="lastNameInput"></param>
         public void Search(string firstNameInput, string lastNameInput)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT * FROM Family WHERE firstname LIKE @firstname AND lastname LIKE @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
@@ -115,7 +115,7 @@ namespace FamilyTreeAssignment
         /// <param name="firstNameInput"></param>
         public void SeachFirstnameByLetter(string firstNameInput)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT * FROM Family WHERE firstname LIKE @firstNameInput";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstNameInput", firstNameInput);
@@ -138,7 +138,7 @@ namespace FamilyTreeAssignment
         /// <param name="yearInput"></param>
         public void SearchByYear(string yearInput)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT * FROM Family WHERE birthdate = @yearInput";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@yearInput", yearInput);
@@ -161,7 +161,7 @@ namespace FamilyTreeAssignment
         /// <param name="parentId"></param>
         public void GetParent(int parentId)
         {
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM Family WHERE Id = @parentId";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@parentId", parentId);
@@ -187,7 +187,7 @@ namespace FamilyTreeAssignment
         public int SetParent(string firstNameInput, string lastNameInput)
         {
             int Id = 0;
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT Id FROM Family WHERE firstname = @firstname AND lastname = @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
@@ -229,7 +229,7 @@ namespace FamilyTreeAssignment
         public bool DoesTableExist()
         {
             bool exists = false;
-            SqlConnection conn = sqlConn();
+            SqlConnection conn = SQLOpenConnection();
             var sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'Family'";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -274,7 +274,7 @@ namespace FamilyTreeAssignment
         /// Open SQL Connection.
         /// </summary>
         /// <returns></returns>
-        private SqlConnection sqlConn()
+        private SqlConnection SQLOpenConnection()
         {
             var connString = string.Format(ConnectionString, DatabaseName);
             var conn = new SqlConnection(connString);

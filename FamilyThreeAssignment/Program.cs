@@ -11,7 +11,7 @@ namespace FamilyTreeAssignment
         static void Main(string[] args)
         {
             var family = new FamilyTree();
-            family.MainMenu();
+            family.Start();
         }
     }
 }

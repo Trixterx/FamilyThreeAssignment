@@ -9,65 +9,66 @@ namespace FamilyThreeAssignment
 {
     class FamilyTree
     {
-        public void MainMenu()
+        public void Start()
         {
             var listOfPersons = new List<Person>();
             var database = new SqlDatabase();
-            bool mainMenuKeepGoing = true;
 
-            /// <summary>
-            /// Setup runs first to create database, table and a list of persons.
-            /// </summary>
             Setup(listOfPersons, database);
-
+            MainMenu(listOfPersons, database);
+        }
             /// <summary>
             /// The Main Menu.
             /// </summary>
-            do
-            {                
-                Console.WriteLine("------------------------------------------------------------");
-                Console.WriteLine("|  Main Menu                                               |");
-                Console.WriteLine("------------------------------------------------------------");
-                Console.WriteLine("1. List All Persons");
-                Console.WriteLine("2. Create Person");
-                Console.WriteLine("3. Update Person");
-                Console.WriteLine("4. Search Person");
-                Console.WriteLine("5. Delete Person");
-                Console.WriteLine("6. Select Person | Get Details About Selected Person");
-                Console.WriteLine("0. Exit");
-                Console.WriteLine("------------------------------------------------------------");
-                var mainMenuInput = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("------------------------------------------------------------");
-                switch (mainMenuInput)
+            private static void MainMenu(List<Person> listOfPersons, SqlDatabase database)
+            {
+            bool mainMenuKeepGoing = true;
+
+                do
                 {
-                    case 1:
-                        database.Read();
-                        break;
-                    case 2:
-                        CreatePerson(listOfPersons, database);
-                        break;
-                    case 3:
-                        UpdatePerson(listOfPersons, database);
-                        break;
-                    case 4:
-                        SearchPerson(database);
-                        break;
-                    case 5:                    
-                        DeletePerson(listOfPersons, database);
-                        break;
-                    case 6:
-                        SelectPerson(listOfPersons, database);
-                        break;
-                    case 0:
-                        Console.WriteLine("Byebye");
-                        mainMenuKeepGoing = false;
-                        break;
-                    default:
-                        Console.WriteLine("Wrong input, try again!");
-                        break;
-                }
-            } while (mainMenuKeepGoing);
-        }
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine("|  Main Menu                                               |");
+                    Console.WriteLine("------------------------------------------------------------");
+                    Console.WriteLine("1. List All Persons");
+                    Console.WriteLine("2. Create Person");
+                    Console.WriteLine("3. Update Person");
+                    Console.WriteLine("4. Search Person");
+                    Console.WriteLine("5. Delete Person");
+                    Console.WriteLine("6. Select Person | Get Details About Selected Person");
+                    Console.WriteLine("0. Exit");
+                    Console.WriteLine("------------------------------------------------------------");
+                    var mainMenuInput = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("------------------------------------------------------------");
+                    switch (mainMenuInput)
+                    {
+                        case 1:
+                            database.Read();
+                            break;
+                        case 2:
+                            CreatePerson(listOfPersons, database);
+                            break;
+                        case 3:
+                            UpdatePerson(listOfPersons, database);
+                            break;
+                        case 4:
+                            SearchPerson(database);
+                            break;
+                        case 5:
+                            DeletePerson(listOfPersons, database);
+                            break;
+                        case 6:
+                            SelectPerson(listOfPersons, database);
+                            break;
+                        case 0:
+                            Console.WriteLine("Byebye");
+                            mainMenuKeepGoing = false;
+                            break;
+                        default:
+                            Console.WriteLine("Wrong input, try again!");
+                            break;
+                    }
+                } while (mainMenuKeepGoing);
+            }
 
         /// <summary>
         /// Select Person Menu. Select a person to then get mother, father or children printed.
@@ -76,37 +77,45 @@ namespace FamilyThreeAssignment
         /// <param name="database"></param>
         private static void SelectPerson(List<Person> listOfPersons, SqlDatabase database)
         {
+            bool selectKeepGoing = true;
+            database.Read();
+            Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Which person do you wanna select?");
             Console.WriteLine("------------------------------------------------------------");
-            int selectPersonInput = Convert.ToInt32(Console.ReadLine()) - 1;
-            Console.WriteLine($"{listOfPersons[selectPersonInput].Id}. {listOfPersons[selectPersonInput].FirstName} {listOfPersons[selectPersonInput].LastName}");
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine("|  Select Person Menu                                      |");
-            Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine("1. Get Mother");
-            Console.WriteLine("2. Get Father");
-            Console.WriteLine("3. Get Children");
-            Console.WriteLine("0. Main Menu");
-            Console.WriteLine("------------------------------------------------------------");
-            int getParent = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("------------------------------------------------------------");
-            switch (getParent)
+            int selectInput = Convert.ToInt32(Console.ReadLine());
+            Person selectedPerson = listOfPersons[selectInput - 1];
+            Console.WriteLine($"You Selected: {selectedPerson.Id}. {selectedPerson.FirstName} {selectedPerson.LastName}");
+            do
             {
-                case 1:
-                    database.GetParent(listOfPersons[selectPersonInput].MotherId);
-                    break;
-                case 2:
-                    database.GetParent(listOfPersons[selectPersonInput].FatherId);
-                    break;
-                case 3:
-                    database.GetParent(listOfPersons[selectPersonInput].ChildId);
-                    break;
-                case 0:
-                    break;
-                default:
-                    Console.WriteLine("Wrong input, try again!");
-                    break;
-            }
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("|  Select Person Menu                                      |");
+                Console.WriteLine("------------------------------------------------------------");
+                Console.WriteLine("1. Get Mother");
+                Console.WriteLine("2. Get Father");
+                Console.WriteLine("3. Get Children");
+                Console.WriteLine("0. Main Menu");
+                Console.WriteLine("------------------------------------------------------------");
+                int getParent = Convert.ToInt32(Console.ReadLine());
+                Console.WriteLine("------------------------------------------------------------");
+                switch (getParent)
+                {
+                    case 1:
+                        database.GetParent(selectedPerson.MotherId);
+                        break;
+                    case 2:
+                        database.GetParent(selectedPerson.FatherId);
+                        break;
+                    case 3:
+                        database.GetParent(selectedPerson.ChildId);
+                        break;
+                    case 0:
+                        selectKeepGoing = false;
+                        break;
+                    default:
+                        Console.WriteLine("Wrong input, try again!");
+                        break;
+                }
+            } while (selectKeepGoing);
         }
 
         /// <summary>
@@ -121,6 +130,8 @@ namespace FamilyThreeAssignment
             Console.WriteLine("Who do you wanna Delete?");
             Console.WriteLine("------------------------------------------------------------");
             int inputId = Convert.ToInt32(Console.ReadLine());
+            Person selectedDelete = listOfPersons[inputId - 1];
+            Console.WriteLine($"You Deleted: {selectedDelete.Id}. {selectedDelete.FirstName} {selectedDelete.LastName}");
             database.Delete(inputId);
             listOfPersons.RemoveAt(inputId - 1);
         }
@@ -180,9 +191,10 @@ namespace FamilyThreeAssignment
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("Which person do you wanna update?");
             Console.WriteLine("------------------------------------------------------------");
-            int selectedPerson = Convert.ToInt32(Console.ReadLine()) - 1;
+            int updateInput = Convert.ToInt32(Console.ReadLine());
+            Person selectedPerson = listOfPersons[updateInput - 1];
             Console.WriteLine("------------------------------------------------------------");
-            Console.WriteLine($"{listOfPersons[selectedPerson].Id}. {listOfPersons[selectedPerson].FirstName} {listOfPersons[selectedPerson].LastName}");
+            Console.WriteLine($"{selectedPerson.Id}. {selectedPerson.FirstName} {selectedPerson.LastName}");
             Console.WriteLine("------------------------------------------------------------");
             Console.WriteLine("|  Update Person Menu                                      |");
             Console.WriteLine("------------------------------------------------------------");
@@ -201,42 +213,42 @@ namespace FamilyThreeAssignment
                 case 1:
                     Console.WriteLine("Enter new Firstname: ");
                     firstNameInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].FirstName = firstNameInput;
-                    database.Update("firstname", listOfPersons[selectedPerson].FirstName, listOfPersons[selectedPerson].Id);
+                    selectedPerson.FirstName = firstNameInput;
+                    database.Update("firstname", selectedPerson.FirstName, selectedPerson.Id);
                     break;
                 case 2:
                     Console.WriteLine("Enter new Lastname: ");
                     lastNameInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].LastName = lastNameInput;
-                    database.Update("lastname", listOfPersons[selectedPerson].LastName, listOfPersons[selectedPerson].Id);
+                    selectedPerson.LastName = lastNameInput;
+                    database.Update("lastname", selectedPerson.LastName, selectedPerson.Id);
                     break;
                 case 3:
                     Console.WriteLine("Enter new Birthdate: ");
                     birthDateInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].BirthDate = birthDateInput;
-                    database.Update("birthdate", listOfPersons[selectedPerson].BirthDate, listOfPersons[selectedPerson].Id);
+                    selectedPerson.BirthDate = birthDateInput;
+                    database.Update("birthdate", selectedPerson.BirthDate, selectedPerson.Id);
                     break;
                 case 4:
                     Console.WriteLine("Enter new Deathdate: ");
                     deathDateInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].DeathDate = deathDateInput;
-                    database.Update("deathdate", listOfPersons[selectedPerson].DeathDate, listOfPersons[selectedPerson].Id);    
+                    selectedPerson.DeathDate = deathDateInput;
+                    database.Update("deathdate", selectedPerson.DeathDate, selectedPerson.Id);    
                     break;
                 case 5:
                     Console.WriteLine("Mothers Firstname: ");
                     firstNameInput = Console.ReadLine();
                     Console.WriteLine("Mothers Lastname: ");
                     lastNameInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].MotherId = database.SetParent(firstNameInput, lastNameInput);
-                    database.Update("motherId", listOfPersons[selectedPerson].MotherId.ToString(), listOfPersons[selectedPerson].Id);          
+                    selectedPerson.MotherId = database.SetParent(firstNameInput, lastNameInput);
+                    database.Update("motherId", selectedPerson.MotherId.ToString(), selectedPerson.Id);          
                     break;
                 case 6:
                     Console.WriteLine("Fathers Firstname: ");
                     firstNameInput = Console.ReadLine();
                     Console.WriteLine("Fathers Lastname: ");
                     lastNameInput = Console.ReadLine();
-                    listOfPersons[selectedPerson].FatherId = database.SetParent(firstNameInput, lastNameInput);
-                    database.Update("motherId", listOfPersons[selectedPerson].FatherId.ToString(), listOfPersons[selectedPerson].Id);   
+                    selectedPerson.FatherId = database.SetParent(firstNameInput, lastNameInput);
+                    database.Update("motherId", selectedPerson.FatherId.ToString(), selectedPerson.Id);   
                     break;
                 case 0:
                     break;

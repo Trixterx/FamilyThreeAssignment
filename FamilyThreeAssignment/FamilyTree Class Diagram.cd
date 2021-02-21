@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="FamilyThreeAssignment.FamilyTree" Collapsed="true">
-    <Position X="3" Y="1.25" Width="1.5" />
+  <Class Name="FamilyThreeAssignment.FamilyTree">
+    <Position X="8" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AACAAAAACAAAEAAAAAAAAAgQAAAAAAAAAAAAAAiAAAg=</HashCode>
+      <HashCode>AACAAAAACCAAEAAAAAAAAAgQAAAAAAAAAAAAAAiAAAg=</HashCode>
       <FileName>FamilyTree.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FamilyTreeAssignment.Person" Collapsed="true">
-    <Position X="4.75" Y="1.25" Width="1.5" />
+  <Class Name="FamilyTreeAssignment.Person">
+    <Position X="10.5" Y="0.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAACAEAAAAABAAAAAAAAAAQAAAAgAAAAAQAAAAAAAAg=</HashCode>
       <FileName>Person.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="FamilyTreeAssignment.SqlDatabase" Collapsed="true">
-    <Position X="3" Y="2.25" Width="1.5" />
+  <Class Name="FamilyTreeAssignment.SqlDatabase">
+    <Position X="5.5" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAEAAAAAABAAAAAAkAEEAgEAAAGAAAAQhRBA=</HashCode>
+      <HashCode>AAQAAAAAAAIAAAAABAAAAAAkAAEAAEBAAGAAAAQhQhA=</HashCode>
       <FileName>SqlDatabase.cs</FileName>
     </TypeIdentifier>
   </Class>
