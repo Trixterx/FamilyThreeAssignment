@@ -41,7 +41,7 @@ namespace FamilyThreeAssignment
                         CreatePerson(listOfPersons, database);
                         break;
                     case 3:
-                        UpdatePersonMenu(listOfPersons, database);
+                        UpdatePerson(listOfPersons, database);
                         break;
                     case 4:
                         SearchPerson(database);
@@ -127,17 +127,17 @@ namespace FamilyThreeAssignment
                 case 2:
                     Console.WriteLine("Firstname of the person you want to search for: ");
                     firstNameInput = Console.ReadLine();
-                    database.SearchByLetter($"%{firstNameInput}%");
+                    database.SearchByFirstNameLetter($"%{firstNameInput}%");
                     break;
                 case 3:
-                    Console.WriteLine("What year do you wanna search for: ");
+                    Console.WriteLine("What year do you want to search for: ");
                     yearInput = Console.ReadLine();
                     database.SearchByYear(yearInput);
                     break;
             }
         }
 
-        private static void UpdatePersonMenu(List<Person> listOfPersons, SqlDatabase database)
+        private static void UpdatePerson(List<Person> listOfPersons, SqlDatabase database)
         {
 
             string firstNameInput, lastNameInput, birthDateInput, deathDateInput;

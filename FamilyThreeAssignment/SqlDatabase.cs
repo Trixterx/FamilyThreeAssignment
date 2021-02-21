@@ -10,10 +10,7 @@ namespace FamilyTreeAssignment
     class SqlDatabase
     {
         public string DatabaseName { get; set; } = "Population";
-        public int MaxRows { get; set; } = 10;
-        public string OrderBy { get; set; } = "lastName";
         internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database={0}";
-     //   public List<Person> listOfPersons = new List<Person>();
 
         public void Create(Person person)
         {
@@ -89,7 +86,7 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
-        public void SearchByLetter(string firstNameInput)
+        public void SearchByFirstNameLetter(string firstNameInput)
         {
             SqlConnection conn = sqlConn();
             var sql = "SELECT * FROM People WHERE firstname LIKE @firstNameInput";
