@@ -13,7 +13,7 @@ namespace FamilyThreeAssignment
         {
             var listOfPersons = new List<Person>();
             var database = new SqlDatabase();
-            bool KeepGoing = true;
+            bool mainMenuKeepGoing = true;
 
             Setup(listOfPersons, database);
 
@@ -31,9 +31,9 @@ namespace FamilyThreeAssignment
                 Console.WriteLine("7. Test!");
                 Console.WriteLine("0. Exit");
                 Console.WriteLine("-------------------");
-                var input = Convert.ToInt32(Console.ReadLine());
+                var mainMenuInput = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("-------------------");
-                switch (input)
+                switch (mainMenuInput)
                 {
                     case 1:
                         database.Read();
@@ -56,13 +56,19 @@ namespace FamilyThreeAssignment
                         Console.WriteLine($"{listOfPersons[selectPersonInput].Id}. {listOfPersons[selectPersonInput].FirstName} {listOfPersons[selectPersonInput].LastName}");
                         Console.WriteLine("1. Get Mother");
                         Console.WriteLine("2. Get Father");
+                        Console.WriteLine("3. Get Children");
                         Console.WriteLine("0. Main Menu");
                         int getParent = Convert.ToInt32(Console.ReadLine());
                         switch (getParent)
                         {
                             case 1:
+                                database.GetParent(listOfPersons[selectPersonInput].MotherId);
                                 break;
                             case 2:
+                                database.GetParent(listOfPersons[selectPersonInput].FatherId);
+                                break;
+                            case 3:
+                                database.GetParent(listOfPersons[selectPersonInput].ChildId);
                                 break;
                             case 0:
                                 break;
@@ -77,10 +83,10 @@ namespace FamilyThreeAssignment
                         break;
                     case 0:
                         Console.WriteLine("Byebye");
-                        KeepGoing = false;
+                        mainMenuKeepGoing = false;
                         break;
                 }
-            } while (KeepGoing);
+            } while (mainMenuKeepGoing);
         }
 
         private static void DeletePerson(List<Person> listOfPersons, SqlDatabase database)
@@ -93,13 +99,34 @@ namespace FamilyThreeAssignment
 
         private static void SearchPerson(SqlDatabase database)
         {
-            string firstNameInput, lastNameInput;
-
-            Console.WriteLine("Firstname of the person you want to search for: ");
-            firstNameInput = Console.ReadLine();
-            Console.WriteLine("Lastname of the person you want to search for: ");
-            lastNameInput = Console.ReadLine();
-            database.Search(firstNameInput, lastNameInput);
+            string firstNameInput, lastNameInput, yearInput;
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("|  Search Person                |");
+            Console.WriteLine("---------------------------------");
+            Console.WriteLine("1. Search by First and Lastname");
+            Console.WriteLine("2. Search by Starting Letter of Firstname");
+            Console.WriteLine("3. Search by Birth Year");
+            int searchPersonInput = Convert.ToInt32(Console.ReadLine());
+            switch (searchPersonInput)
+            {
+                case 1:
+                    Console.WriteLine("Firstname of the person you want to search for: ");
+                    firstNameInput = Console.ReadLine();
+                    Console.WriteLine("Lastname of the person you want to search for: ");
+                    lastNameInput = Console.ReadLine();
+                    database.Search(firstNameInput, lastNameInput);
+                    break;
+                case 2:
+                    Console.WriteLine("Firstname of the person you want to search for: ");
+                    firstNameInput = Console.ReadLine();
+                    database.SearchByLetter($"%{firstNameInput}%");
+                    break;
+                case 3:
+                    Console.WriteLine("What year do you wanna search for: ");
+                    yearInput = Console.ReadLine();
+                    database.SearchByYear(yearInput);
+                    break;
+            }
         }
 
         private static void UpdatePersonMenu(List<Person> listOfPersons, SqlDatabase database)
@@ -227,15 +254,15 @@ namespace FamilyThreeAssignment
 
         private static void CreateListOfPeople(List<Person> listOfPersons)
         {
-            listOfPersons.Add(new Person(1, "Dennis", "Lindquist", "1988", "", 4, 5));
-            listOfPersons.Add(new Person(2, "Marielle", "Lunnan", "1989", "", 0, 0));
-            listOfPersons.Add(new Person(3, "Saga", "Lindquist", "2020", "", 2, 1));
-            listOfPersons.Add(new Person(4, "Katarina", "Lindquist", "1964", "", 7, 6));
-            listOfPersons.Add(new Person(5, "Mikael", "Lindh", "1965", "", 9, 8));
-            listOfPersons.Add(new Person(6, "Elis", "Lindquist", "1920", "2008", 0, 0));
-            listOfPersons.Add(new Person(7, "Gun", "Lindquist", "1941", "", 0, 0));
-            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "", 0, 0));
-            listOfPersons.Add(new Person(9, "Barbro", "Lindh", "1931", "", 0, 0));
+            listOfPersons.Add(new Person(1, "Dennis", "Lindquist", "1988", "", 4, 5, 3));
+            listOfPersons.Add(new Person(2, "Marielle", "Lunnan", "1989", "", 0, 0, 3));
+            listOfPersons.Add(new Person(3, "Saga", "Lindquist", "2020", "", 2, 1, 0));
+            listOfPersons.Add(new Person(4, "Katarina", "Lindquist", "1964", "", 7, 6, 1));
+            listOfPersons.Add(new Person(5, "Mikael", "Lindh", "1965", "", 9, 8, 1));
+            listOfPersons.Add(new Person(6, "Elis", "Lindquist", "1920", "2008", 0, 0, 4));
+            listOfPersons.Add(new Person(7, "Gun", "Lindquist", "1941", "", 0, 0, 4));
+            listOfPersons.Add(new Person(8, "Erik", "Lindh", "1920", "", 0, 0, 5));
+            listOfPersons.Add(new Person(9, "Barbro", "Lindh", "1931", "", 0, 0, 5));
 
         }
     }

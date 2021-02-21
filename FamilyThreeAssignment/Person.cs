@@ -16,8 +16,9 @@ namespace FamilyTreeAssignment
         public string DeathDate { get; set; }
         public int MotherId { get; set; }
         public int FatherId { get; set; }
+        public int ChildId { get; set; }
 
-        public Person(int id, string firstName, string lastName, string birthDate, string deathDate, int motherId, int fatherId)
+        public Person(int id, string firstName, string lastName, string birthDate, string deathDate, int motherId, int fatherId, int childId)
         {
             Id = id;
             FirstName = firstName;
@@ -26,6 +27,7 @@ namespace FamilyTreeAssignment
             DeathDate = deathDate;
             MotherId = motherId;
             FatherId = fatherId;
+            ChildId = childId;
         }
 
         public Person()

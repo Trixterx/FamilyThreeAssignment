@@ -81,15 +81,53 @@ namespace FamilyTreeAssignment
             {
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Born: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} \t| {reader.GetValue("birthdate")}-{reader.GetValue("deathdate")}");
                 }
 
             }
             reader.Close();
             conn.Close();
         }
-    
-        public bool DoesPersonExist(string name)
+
+        public void SearchByLetter(string firstNameInput)
+        {
+            SqlConnection conn = sqlConn();
+            var sql = "SELECT * FROM People WHERE firstname LIKE @firstNameInput";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@firstNameInput", firstNameInput);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} \t| {reader.GetValue("birthdate")}-{reader.GetValue("deathdate")}");
+                }
+
+            }
+            reader.Close();
+            conn.Close();
+        }
+
+        public void SearchByYear(string yearInput)
+        {
+            SqlConnection conn = sqlConn();
+            var sql = "SELECT * FROM People WHERE birthdate = @yearInput";
+            var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@yearInput", yearInput);
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} \t| {reader.GetValue("birthdate")}-{reader.GetValue("deathdate")}");
+                }
+
+            }
+            reader.Close();
+            conn.Close();
+        }
+
+        public bool DoesPersonExist(string firstName, string lastName)
         {
             return true;
         }
@@ -97,25 +135,23 @@ namespace FamilyTreeAssignment
         {
             return true;
         }
-        public void GetMother()
+        public void GetParent(int parentId)
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT firstname, lastname, birthdate, deathdate FROM People WHERE Id = motherId";
+            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM People WHERE Id = @parentId";
             var cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@parentId", parentId);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
                 while (reader.Read())
                 {
-                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} Year: {reader.GetValue("birthdate")} Dead: {reader.GetValue("deathdate")}");
+                    Console.WriteLine($"{reader.GetValue("Id")}. {reader.GetValue("firstname")} {reader.GetValue("lastname")} \t| {reader.GetValue("birthdate")}-{reader.GetValue("deathdate")}");
                 }
 
             }
             reader.Close();
             conn.Close();
-        }
-        public void GetFather()
-        {
         }
 
         /// <summary>
