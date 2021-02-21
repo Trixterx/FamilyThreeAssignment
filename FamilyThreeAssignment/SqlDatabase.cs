@@ -20,7 +20,7 @@ namespace FamilyTreeAssignment
         public void Create(Person person)
         {
             SqlConnection conn = sqlConn();
-            var sql = "INSERT INTO People (firstname, lastname, birthdate, deathdate, motherId, fatherId) VALUES (@firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId)";
+            var sql = "INSERT INTO Family (firstname, lastname, birthdate, deathdate, motherId, fatherId) VALUES (@firstname, @lastname, @birthdate, @deathdate, @motherId, @fatherId)";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", person.FirstName);
             cmd.Parameters.AddWithValue("@lastname", person.LastName);
@@ -38,7 +38,7 @@ namespace FamilyTreeAssignment
         public void Read()
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM People";
+            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM Family";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -62,7 +62,7 @@ namespace FamilyTreeAssignment
         public void Update(string column, string input, int Id)
         {
             SqlConnection conn = sqlConn();
-            var sql = $"UPDATE People SET {column} = @input WHERE Id = @Id";
+            var sql = $"UPDATE Family SET {column} = @input WHERE Id = @Id";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@input", input);
             cmd.Parameters.AddWithValue("@Id", Id);
@@ -77,7 +77,7 @@ namespace FamilyTreeAssignment
         public void Delete(int inputId)
         {
             SqlConnection conn = sqlConn();
-            var sql = "DELETE FROM People WHERE Id = @Id";
+            var sql = "DELETE FROM Family WHERE Id = @Id";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Id", inputId);
             cmd.ExecuteNonQuery();
@@ -92,7 +92,7 @@ namespace FamilyTreeAssignment
         public void Search(string firstNameInput, string lastNameInput)
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT * FROM People WHERE firstname LIKE @firstname AND lastname LIKE @lastname";
+            var sql = "SELECT * FROM Family WHERE firstname LIKE @firstname AND lastname LIKE @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
             cmd.Parameters.AddWithValue("@lastname", lastNameInput);
@@ -116,7 +116,7 @@ namespace FamilyTreeAssignment
         public void SeachFirstnameByLetter(string firstNameInput)
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT * FROM People WHERE firstname LIKE @firstNameInput";
+            var sql = "SELECT * FROM Family WHERE firstname LIKE @firstNameInput";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstNameInput", firstNameInput);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -139,7 +139,7 @@ namespace FamilyTreeAssignment
         public void SearchByYear(string yearInput)
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT * FROM People WHERE birthdate = @yearInput";
+            var sql = "SELECT * FROM Family WHERE birthdate = @yearInput";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@yearInput", yearInput);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -162,7 +162,7 @@ namespace FamilyTreeAssignment
         public void GetParent(int parentId)
         {
             SqlConnection conn = sqlConn();
-            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM People WHERE Id = @parentId";
+            var sql = "SELECT Id, firstname, lastname, birthdate, deathdate FROM Family WHERE Id = @parentId";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@parentId", parentId);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -188,7 +188,7 @@ namespace FamilyTreeAssignment
         {
             int Id = 0;
             SqlConnection conn = sqlConn();
-            var sql = "SELECT Id FROM People WHERE firstname = @firstname AND lastname = @lastname";
+            var sql = "SELECT Id FROM Family WHERE firstname = @firstname AND lastname = @lastname";
             var cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@firstname", firstNameInput);
             cmd.Parameters.AddWithValue("@lastname", lastNameInput);
@@ -212,7 +212,7 @@ namespace FamilyTreeAssignment
         {
             try
             {
-                var sql = "CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
+                var sql = "CREATE TABLE Family(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
                 ExecuteSQL(sql);
             }
             catch (Exception e)
@@ -230,7 +230,7 @@ namespace FamilyTreeAssignment
         {
             bool exists = false;
             SqlConnection conn = sqlConn();
-            var sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'People'";
+            var sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'Family'";
             var cmd = new SqlCommand(sql, conn);
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -239,12 +239,10 @@ namespace FamilyTreeAssignment
                 int count = reader.GetInt32(0);
                 if (count == 0)
                 {
-                    Console.WriteLine("No such data table exists and a new one will be created!");
                     exists = false;
                 }
                 else if (count == 1)
                 {
-                    Console.WriteLine("Such data table exists and will not be created!");
                     exists = true;
                 }
             }

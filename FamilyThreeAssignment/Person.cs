@@ -32,7 +32,6 @@ namespace FamilyTreeAssignment
 
         public Person()
         {
-
         }
     }
 }
