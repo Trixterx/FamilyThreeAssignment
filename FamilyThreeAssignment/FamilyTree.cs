@@ -13,7 +13,7 @@ namespace FamilyThreeAssignment
         {
             var listOfPersons = new List<Person>();
             var database = new SqlDatabase();
-            Console.WriteLine("Hej");
+
             Setup(listOfPersons, database);
             MainMenu(listOfPersons, database);
         }
