@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FamilyThreeAssignment.FamilyTree" Collapsed="true">
+    <Position X="3" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAACAAAEAAAAAAAAAgQAAAAAAAAAAAAAAiAAAg=</HashCode>
+      <FileName>FamilyTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeAssignment.Person" Collapsed="true">
+    <Position X="4.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAABAAAAAAAAAAQAAAAgAAAAAQAAAAAAAAg=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FamilyTreeAssignment.SqlDatabase" Collapsed="true">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAEAAAAAABAAAAAAkAEEAgEAAAGAAAAQhRBA=</HashCode>
+      <FileName>SqlDatabase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

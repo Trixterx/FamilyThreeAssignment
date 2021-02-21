@@ -240,29 +240,37 @@ namespace FamilyTreeAssignment
             conn.Close();
             return exists;
         }
-        /*
-          public void CreateDatabase()
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
-            var sql = "SELECT count(*) as Exist from INFORMATION_SCHEMA.TABLES where table_name = 'People'";
+
+        public void CreateDatabase()
+        {
+            SqlConnection conn = sqlConn();
+            var sql = $"CREATE DATABASE {DatabaseName}";
             var cmd = new SqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
-            Console.WriteLine("Old Table was Dropped and a New Table was Created Successfully...");
+            Console.WriteLine("Database was Created Successfully...");
             conn.Close();
-          {
-              var database = new SqlDatabase();
-              var sql = "CREATE DATABASE " + DatabaseName;
-          }
-          public void CheckDatabase()
-          {
-              var database = new SqlDatabase();
-              var myDatabaseName = "FamilyTree";
-              if (!database.DoesDatabaseExist(myDatabaseName))
-              {
-                  CreateDatabase();
-              }
-          }
+        }
+        /*
+        public void CheckDatabase()
+        {
+            SqlConnection conn = sqlConn();
+            var sql = $"SELECT db_id('{DatabaseName}')";
+            if (!database.DatabaseName)
+            {
+                CreateDatabase();
+            }
+        }
+        public static bool CheckDatabaseExists(string connectionString, string databaseName)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                using (var command = new SqlCommand($"SELECT db_id('{databaseName}')", connection))
+                {
+                    connection.Open();
+                    return (command.ExecuteScalar() != DBNull.Value);
+                }
+            }
+        }
         */
     }
 }
