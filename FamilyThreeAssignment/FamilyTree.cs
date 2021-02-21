@@ -197,6 +197,8 @@ namespace FamilyThreeAssignment
             listOfPersons.Add(newPerson);
         }
 
+
+
         private static void Setup(List<Person> listOfPersons, SqlDatabase database)
         {
             database.CreateTable();
