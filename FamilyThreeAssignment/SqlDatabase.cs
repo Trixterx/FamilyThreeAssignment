@@ -3,15 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Text;
 
 namespace FamilyTreeAssignment
 {
     class SqlDatabase
     {
-        public string DatabaseName { get; set; } = "Population";
+        public string DatabaseName { get; set; } = "FamilyTree";
         internal string ConnectionString { get; set; } = @"Data Source=.\SQLExpress;Integrated Security=true;database={0}";
 
+        /// <summary>
+        /// Create Person's in the database.
+        /// </summary>
+        /// <param name="person"></param>
         public void Create(Person person)
         {
             SqlConnection conn = sqlConn();
@@ -27,6 +32,9 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+        /// <summary>
+        /// Read from Database.
+        /// </summary>
         public void Read()
         {
             SqlConnection conn = sqlConn();
@@ -45,6 +53,12 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+        /// <summary>
+        /// Update person in database by Id.
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="input"></param>
+        /// <param name="Id"></param>
         public void Update(string column, string input, int Id)
         {
             SqlConnection conn = sqlConn();
@@ -56,6 +70,10 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+        /// <summary>
+        /// Delete person from database by Id.
+        /// </summary>
+        /// <param name="inputId"></param>
         public void Delete(int inputId)
         {
             SqlConnection conn = sqlConn();
@@ -66,6 +84,11 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+        /// <summary>
+        /// Seach by first- and lastname.
+        /// </summary>
+        /// <param name="firstNameInput"></param>
+        /// <param name="lastNameInput"></param>
         public void Search(string firstNameInput, string lastNameInput)
         {
             SqlConnection conn = sqlConn();
@@ -86,7 +109,11 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
-        public void SearchByFirstNameLetter(string firstNameInput)
+        /// <summary>
+        /// Seach with letters on firstname.
+        /// </summary>
+        /// <param name="firstNameInput"></param>
+        public void SeachFirstnameByLetter(string firstNameInput)
         {
             SqlConnection conn = sqlConn();
             var sql = "SELECT * FROM People WHERE firstname LIKE @firstNameInput";
@@ -105,6 +132,10 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
+        /// <summary>
+        /// Seach by year by inputted year.
+        /// </summary>
+        /// <param name="yearInput"></param>
         public void SearchByYear(string yearInput)
         {
             SqlConnection conn = sqlConn();
@@ -124,14 +155,10 @@ namespace FamilyTreeAssignment
             conn.Close();
         }
 
-        public bool DoesPersonExist(string firstName, string lastName)
-        {
-            return true;
-        }
-        public bool DoesPersonExist(int Id)
-        {
-            return true;
-        }
+        /// <summary>
+        /// Gets the Id from the parent.
+        /// </summary>
+        /// <param name="parentId"></param>
         public void GetParent(int parentId)
         {
             SqlConnection conn = sqlConn();
@@ -152,7 +179,7 @@ namespace FamilyTreeAssignment
         }
 
         /// <summary>
-        /// Gets parent Id
+        /// Gets parent Id.
         /// </summary>
         /// <param name="firstNameInput"></param>
         /// <param name="lastNameInput"></param>
@@ -179,34 +206,18 @@ namespace FamilyTreeAssignment
         }
 
         /// <summary>
-        /// Database Connection
-        /// </summary>
-        /// <returns></returns>
-        private SqlConnection sqlConn()
-        {
-            var connString = string.Format(ConnectionString, DatabaseName);
-            var conn = new SqlConnection(connString);
-            conn.Open();
-            return conn;
-        }
-
-        /// <summary>
         /// Creates a Data table if none exists.
         /// </summary>
         public void CreateTable()
         {
             try
             {
-                SqlConnection conn = sqlConn();
                 var sql = "CREATE TABLE People(Id int IDENTITY(1,1) PRIMARY KEY, firstname varchar(50), lastname varchar(50), birthdate varchar(50), deathdate varchar(50), motherId int, fatherId int);";
-                var cmd = new SqlCommand(sql, conn);
-                cmd.ExecuteNonQuery();
-                Console.WriteLine("Data table was Created Successfully...");
-                conn.Close();
+                ExecuteSQL(sql);
             }
             catch (Exception e)
             {
-                Console.WriteLine("exception occured while creating table:" + e.Message + "\t" + e.GetType());
+                Debug.WriteLine(e.Message);
             }
         }
 
@@ -215,8 +226,9 @@ namespace FamilyTreeAssignment
         /// </summary>
         /// <param name="exists"></param>
         /// <returns></returns>
-        public bool DoesTableExist(bool exists)
+        public bool DoesTableExist()
         {
+            bool exists = false;
             SqlConnection conn = sqlConn();
             var sql = "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = 'People'";
             var cmd = new SqlCommand(sql, conn);
@@ -241,36 +253,48 @@ namespace FamilyTreeAssignment
             return exists;
         }
 
-        public void CreateDatabase()
+        /// <summary>
+        /// Sets name to "Master" so it can connect then Create the Database with DatabaseName.
+        /// </summary>
+        /// <param name="databaseName"></param>
+        public void CreateDatabase(string databaseName)
         {
-            SqlConnection conn = sqlConn();
-            var sql = $"CREATE DATABASE {DatabaseName}";
+            var sql = $"CREATE DATABASE {databaseName}";
+            DatabaseName = "Master";
+            try
+            {
+                ExecuteSQL(sql);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            DatabaseName = databaseName;
+        }
+
+        /// <summary>
+        /// Open SQL Connection.
+        /// </summary>
+        /// <returns></returns>
+        private SqlConnection sqlConn()
+        {
+            var connString = string.Format(ConnectionString, DatabaseName);
+            var conn = new SqlConnection(connString);
+            conn.Open();
+            return conn;
+        }
+
+        /// <summary>
+        /// SQL Execute.
+        /// </summary>
+        /// <param name="sql"></param>
+        public void ExecuteSQL(string sql)
+        {
+            var conn = new SqlConnection(string.Format(ConnectionString, DatabaseName));
+            conn.Open();
             var cmd = new SqlCommand(sql, conn);
             cmd.ExecuteNonQuery();
-            Console.WriteLine("Database was Created Successfully...");
             conn.Close();
         }
-        /*
-        public void CheckDatabase()
-        {
-            SqlConnection conn = sqlConn();
-            var sql = $"SELECT db_id('{DatabaseName}')";
-            if (!database.DatabaseName)
-            {
-                CreateDatabase();
-            }
-        }
-        public static bool CheckDatabaseExists(string connectionString, string databaseName)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                using (var command = new SqlCommand($"SELECT db_id('{databaseName}')", connection))
-                {
-                    connection.Open();
-                    return (command.ExecuteScalar() != DBNull.Value);
-                }
-            }
-        }
-        */
     }
 }

@@ -15,10 +15,16 @@ namespace FamilyThreeAssignment
             var database = new SqlDatabase();
             bool mainMenuKeepGoing = true;
 
+            /// <summary>
+            /// Setup runs first to create database, table and a list of persons.
+            /// </summary>
             Setup(listOfPersons, database);
 
+            /// <summary>
+            /// The Main Menu.
+            /// </summary>
             do
-            {
+            {                
                 Console.WriteLine("------------------------------------------------------------");
                 Console.WriteLine("|  Main Menu                                               |");
                 Console.WriteLine("------------------------------------------------------------");
@@ -56,10 +62,18 @@ namespace FamilyThreeAssignment
                         Console.WriteLine("Byebye");
                         mainMenuKeepGoing = false;
                         break;
+                    default:
+                        Console.WriteLine("Wrong input, try again!");
+                        break;
                 }
             } while (mainMenuKeepGoing);
         }
 
+        /// <summary>
+        /// Select Person Menu. Select a person to then get mother, father or children printed.
+        /// </summary>
+        /// <param name="listOfPersons"></param>
+        /// <param name="database"></param>
         private static void SelectPerson(List<Person> listOfPersons, SqlDatabase database)
         {
             Console.WriteLine("Which person do you wanna select?");
@@ -89,9 +103,17 @@ namespace FamilyThreeAssignment
                     break;
                 case 0:
                     break;
+                default:
+                    Console.WriteLine("Wrong input, try again!");
+                    break;
             }
         }
 
+        /// <summary>
+        /// Delete Person.
+        /// </summary>
+        /// <param name="listOfPersons"></param>
+        /// <param name="database"></param>
         private static void DeletePerson(List<Person> listOfPersons, SqlDatabase database)
         {
             database.Read();
@@ -103,6 +125,10 @@ namespace FamilyThreeAssignment
             listOfPersons.RemoveAt(inputId - 1);
         }
 
+        /// <summary>
+        /// Search Person Manu.
+        /// </summary>
+        /// <param name="database"></param>
         private static void SearchPerson(SqlDatabase database)
         {
             string firstNameInput, lastNameInput, yearInput;
@@ -127,16 +153,24 @@ namespace FamilyThreeAssignment
                 case 2:
                     Console.WriteLine("Firstname of the person you want to search for: ");
                     firstNameInput = Console.ReadLine();
-                    database.SearchByFirstNameLetter($"%{firstNameInput}%");
+                    database.SeachFirstnameByLetter($"%{firstNameInput}%");
                     break;
                 case 3:
                     Console.WriteLine("What year do you want to search for: ");
                     yearInput = Console.ReadLine();
                     database.SearchByYear(yearInput);
                     break;
+                default:
+                    Console.WriteLine("Wrong input, try again!");
+                    break;
             }
         }
 
+        /// <summary>
+        /// Update Person Menu.
+        /// </summary>
+        /// <param name="listOfPersons"></param>
+        /// <param name="database"></param>
         private static void UpdatePerson(List<Person> listOfPersons, SqlDatabase database)
         {
 
@@ -206,7 +240,10 @@ namespace FamilyThreeAssignment
                     break;
                 case 0:
                     break;
-                }
+                default:
+                    Console.WriteLine("Wrong input, try again!");
+                    break;
+            }
         }
 
         private static void CreatePerson(List<Person> listOfPersons, SqlDatabase database)
@@ -244,13 +281,13 @@ namespace FamilyThreeAssignment
             listOfPersons.Add(newPerson);
         }
 
-
-
         private static void Setup(List<Person> listOfPersons, SqlDatabase database)
         {
-            bool exists = true;
             CreateListOfPeople(listOfPersons);
-            if (!database.DoesTableExist(exists))
+            database.CreateDatabase(database.DatabaseName);
+            
+
+            if (!database.DoesTableExist())
             {
                 database.CreateTable();
 
